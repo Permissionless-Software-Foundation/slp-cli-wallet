@@ -80,10 +80,7 @@ class GetAddress extends Command {
     } else this.bchjs = new config.BCHLIB({ restURL: config.MAINNET_REST })
 
     // root seed buffer
-    let rootSeed
-    if (config.RESTAPI === 'bitcoin.com') {
-      rootSeed = this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
-    } else rootSeed = await this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
+    const rootSeed = await this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
 
     // master HDNode
     let masterHDNode
@@ -148,11 +145,9 @@ class GetAddress extends Command {
 GetAddress.description = 'Generate a new address to recieve BCH.'
 
 GetAddress.flags = {
+  testnet: flags.boolean({ char: 't', description: 'Create a testnet wallet' }),
   name: flags.string({ char: 'n', description: 'Name of wallet' }),
-  token: flags.boolean({
-    char: 't',
-    description: 'Generate a simpledger: token address'
-  })
+  slp: flags.boolean({ char: 's', description: 'Generate a simpledger: token address' })
 }
 
 module.exports = GetAddress

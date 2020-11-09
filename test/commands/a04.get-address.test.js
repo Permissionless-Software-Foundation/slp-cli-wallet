@@ -234,23 +234,21 @@ describe('get-address', () => {
     const index = addr.indexOf('bchtest:')
     assert.isAbove(index, -1, 'cash address')
   })
-  it('should run the run() function with rest.bincoin.com backend', async () => {
+  it('should run the run() function with testnet backend', async () => {
     const flags = {
-      name: 'test123'
+      name: 'test123',
+      testnet: true
     }
 
     // Mock methods that will be tested elsewhere.
     const createWallet = new CreateWallet()
-    await createWallet.createWallet(filename)
+    await createWallet.createWallet(filename, 'testnet')
     sandbox.stub(getAddress, 'parse').returns({ flags: flags })
 
-    // const saveConfigVal = config.RESTAPI
-    // config.RESTAPI = 'bitcoin.com'
     const addr = await getAddress.run()
-    // config.RESTAPI = saveConfigVal
 
-    const index = addr.indexOf('bitcoincash:')
-    assert.isAbove(index, -1, 'cash address')
+    const index = addr.indexOf('bchtest:')
+    assert.isAbove(index, -1, 'testnet address')
   })
   it('should return error.message on empty flags', async () => {
     try {
