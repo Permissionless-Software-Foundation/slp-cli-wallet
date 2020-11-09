@@ -6,6 +6,7 @@ const CreateWallet = require('../../src/commands/create-wallet')
 const ListWallets = require('../../src/commands/list-wallets')
 const filename = `${__dirname}/../../wallets/test123.json`
 const fs = require('fs')
+const mock = require('mock-fs')
 
 // const { bitboxMock } = require("../mocks/bitbox")
 // const BB = require("bitbox-sdk").BITBOX
@@ -73,5 +74,34 @@ describe('list-wallets', () => {
     const balance = testWallet[2]
     assert.equal(network, 'testnet', 'Correct network detected.')
     assert.equal(balance, 0, 'Should have a zero balance')
+  })
+  it('should display wallets table', async () => {
+    const createWallet = new CreateWallet()
+    await createWallet.createWallet(filename, 'testnet')
+
+    const listWallets = new ListWallets()
+    Promise.resolve(listWallets.run()).then(function (table) {
+      // console.log(`table: ${util.inspect(table)}`)
+      assert.include(table, 'Name')
+      assert.include(table, 'Network')
+      assert.include(table, 'Balance (BCH)')
+    })
+  })
+  it('should return empty array on missing wallets data', async () => {
+    const createWallet = new CreateWallet()
+    await createWallet.createWallet(filename, 'testnet')
+
+    const listWallets = new ListWallets()
+    // simulate no files found
+    mock({})
+    let data
+    try {
+      data = listWallets.parseWallets()
+      // console.log(`data: ${util.inspect(data)}`)
+    } catch (error) {
+      assert.equal(data, [], 'Empty array')
+      assert.equal(error, 'No wallets found.', 'Proper error message')
+    }
+    mock.restore()
   })
 })

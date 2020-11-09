@@ -23,13 +23,12 @@ class ListWallets extends Command {
     const walletData = this.parseWallets()
     // console.log(`walletData: ${JSON.stringify(walletData, null, 2)}`)
 
-    this.displayTable(walletData)
+    return this.displayTable(walletData)
   }
 
   // Parse data from the wallets directory into a formatted array.
   parseWallets () {
     const fileList = shelljs.ls(`${__dirname}/../../wallets/*.json`)
-    // console.log(`fileList: ${JSON.stringify(fileList, null, 2)}`)
 
     if (fileList.length === 0) {
       console.log('No wallets found.')
@@ -73,7 +72,9 @@ class ListWallets extends Command {
 
     for (let i = 0; i < data.length; i++) table.push(data[i])
 
-    console.log(table.toString())
+    const tableStr = table.toString()
+    console.log(tableStr)
+    return tableStr
   }
 }
 
