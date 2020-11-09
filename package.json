@@ -73,7 +73,7 @@
     "test:integration:decatur": "RESTAPI=decatur TEST=integration nyc --reporter=text mocha  --timeout 25000",
     "test:temp": "TEST=integration mocha --timeout 25000 -g '#getAddressData'",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "coverage:report": "nyc --reporter=html mocha",
+    "coverage:report": "nyc --reporter=html mocha test/commands/",
     "version": "oclif-dev readme && git add README.md",
     "semantic-release": "semantic-release",
     "lint": "standard --env mocha --fix"

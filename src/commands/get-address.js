@@ -61,10 +61,13 @@ class GetAddress extends Command {
       this.log(`cash address: ${newAddress}`)
       this.log(`SLP address: ${slpAddr}`)
       this.log(`legacy address: ${legacy}`)
+
       return newAddress
     } catch (err) {
       if (err.message) console.log(err.message)
       else console.log('Error in GetAddress.run: ', err)
+
+      return 0
     }
   }
 
@@ -147,7 +150,10 @@ GetAddress.description = 'Generate a new address to recieve BCH.'
 GetAddress.flags = {
   testnet: flags.boolean({ char: 't', description: 'Create a testnet wallet' }),
   name: flags.string({ char: 'n', description: 'Name of wallet' }),
-  slp: flags.boolean({ char: 's', description: 'Generate a simpledger: token address' })
+  slp: flags.boolean({
+    char: 's',
+    description: 'Generate a simpledger: token address'
+  })
 }
 
 module.exports = GetAddress
