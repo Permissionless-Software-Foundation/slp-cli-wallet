@@ -1,18 +1,7 @@
 'use strict'
 
-// const fs = require("fs")
-// const BB = require("bitbox-sdk/lib/bitbox-sdk").default
-
 const shelljs = require('shelljs')
 const Table = require('cli-table')
-// const qrcode = require('qrcode-terminal')
-
-const util = require('util')
-util.inspect.defaultOptions = {
-  showHidden: true,
-  colors: true,
-  depth: 1
-}
 
 const { Command } = require('@oclif/command')
 
@@ -23,13 +12,12 @@ class ListWallets extends Command {
     const walletData = this.parseWallets()
     // console.log(`walletData: ${JSON.stringify(walletData, null, 2)}`)
 
-    this.displayTable(walletData)
+    return this.displayTable(walletData)
   }
 
   // Parse data from the wallets directory into a formatted array.
   parseWallets () {
     const fileList = shelljs.ls(`${__dirname}/../../wallets/*.json`)
-    // console.log(`fileList: ${JSON.stringify(fileList, null, 2)}`)
 
     if (fileList.length === 0) {
       console.log('No wallets found.')
@@ -73,7 +61,9 @@ class ListWallets extends Command {
 
     for (let i = 0; i < data.length; i++) table.push(data[i])
 
-    console.log(table.toString())
+    const tableStr = table.toString()
+    console.log(tableStr)
+    return tableStr
   }
 }
 
