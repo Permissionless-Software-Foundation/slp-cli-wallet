@@ -9,12 +9,12 @@
 const AppUtils = require('../util')
 const appUtils = new AppUtils()
 
-const config = require('../../config')
+const globalConfig = require('../../config')
 
 // Mainnet by default
-const BITBOX = new config.BCHLIB({
-  restURL: config.MAINNET_REST,
-  apiToken: config.JWT
+const bchjs = new globalConfig.BCHLIB({
+  restURL: globalConfig.MAINNET_REST,
+  apiToken: globalConfig.JWT
 })
 
 const { Command, flags } = require('@oclif/command')
@@ -28,7 +28,9 @@ class CreateWallet extends Command {
     super(argv, config)
     // _this = this
 
-    this.BITBOX = BITBOX
+    this.bchjs = bchjs
+    this.fs = fs
+    this.config = globalConfig
   }
 
   async run () {
@@ -39,7 +41,9 @@ class CreateWallet extends Command {
       this.validateFlags(flags)
 
       // Determine if this is a testnet wallet or a mainnet wallet.
-      if (flags.testnet) { this.BITBOX = new config.BCHLIB({ restURL: config.TESTNET_REST }) }
+      if (flags.testnet) {
+        this.bchjs = new this.config.BCHLIB({ restURL: this.config.TESTNET_REST })
+      }
 
       const filename = `${__dirname}/../../wallets/${flags.name}.json`
 
@@ -49,6 +53,8 @@ class CreateWallet extends Command {
     } catch (err) {
       if (err.message) console.log(err.message)
       else console.log('Error in create-wallet.js/run(): ', err)
+
+      return 0
     }
   }
 
@@ -56,7 +62,7 @@ class CreateWallet extends Command {
   async createWallet (filename, testnet, desc) {
     try {
       if (!filename || filename === '') throw new Error('filename required.')
-      if (fs.existsSync(filename)) throw new Error('filename already exist')
+      if (this.fs.existsSync(filename)) throw new Error('filename already exist')
 
       // console.log(filename)
       // Initialize the wallet data object that will be saved to a file.
@@ -65,34 +71,35 @@ class CreateWallet extends Command {
       else walletData.network = 'mainnet'
 
       // create 128 bit (12 word) BIP39 mnemonic
-      const mnemonic = this.BITBOX.Mnemonic.generate(
+      const mnemonic = this.bchjs.Mnemonic.generate(
         128,
-        this.BITBOX.Mnemonic.wordLists().english
+        this.bchjs.Mnemonic.wordLists().english
       )
       walletData.mnemonic = mnemonic
 
       // root seed buffer
-      let rootSeed
-      if (config.RESTAPI === 'bitcoin.com') { rootSeed = this.BITBOX.Mnemonic.toSeed(mnemonic) } else rootSeed = await this.BITBOX.Mnemonic.toSeed(mnemonic)
+      const rootSeed = await this.bchjs.Mnemonic.toSeed(mnemonic)
 
       // master HDNode
-      let masterHDNode = this.BITBOX.HDNode.fromSeed(rootSeed)
-      if (testnet) { masterHDNode = this.BITBOX.HDNode.fromSeed(rootSeed, 'testnet') }
+      let masterHDNode = this.bchjs.HDNode.fromSeed(rootSeed)
+      if (testnet) {
+        masterHDNode = this.bchjs.HDNode.fromSeed(rootSeed, 'testnet')
+      }
 
       // Use the 245 derivation path by default.
       walletData.derivation = 245
 
       // HDNode of BIP44 account
-      const account = this.BITBOX.HDNode.derivePath(
+      const account = this.bchjs.HDNode.derivePath(
         masterHDNode,
         `m/44'/${walletData.derivation}'/0'`
       )
 
       // derive the first external change address HDNode which is going to spend utxo
-      const change = this.BITBOX.HDNode.derivePath(account, '0/0')
+      const change = this.bchjs.HDNode.derivePath(account, '0/0')
 
       // get the cash address
-      walletData.rootAddress = this.BITBOX.HDNode.toCashAddress(change)
+      walletData.rootAddress = this.bchjs.HDNode.toCashAddress(change)
 
       // Initialize other data.
       walletData.balance = 0
@@ -116,7 +123,9 @@ class CreateWallet extends Command {
   validateFlags (flags) {
     // Exit if wallet not specified.
     const name = flags.name
-    if (!name || name === '') { throw new Error('You must specify a wallet with the -n flag.') }
+    if (!name || name === '') {
+      throw new Error('You must specify a wallet with the -n flag.')
+    }
 
     return true
   }
@@ -127,7 +136,10 @@ CreateWallet.description = 'Generate a new HD Wallet.'
 CreateWallet.flags = {
   testnet: flags.boolean({ char: 't', description: 'Create a testnet wallet' }),
   name: flags.string({ char: 'n', description: 'Name of wallet' }),
-  description: flags.string({ char: 'd', description: 'Description of the wallet' })
+  description: flags.string({
+    char: 'd',
+    description: 'Description of the wallet'
+  })
 }
 
 module.exports = CreateWallet
