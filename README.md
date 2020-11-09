@@ -6,23 +6,16 @@ wallet for tokens with value.*
 
 This is an npm library and Bitcoin Cash (BCH) wallet that runs on the command
 line. Add this library to your app to instantly give it the ability to transact
-on the BCH network! New to Bitcoin Cash? Learn the basics with [Mastering Bitcoin Cash](https://developer.bitcoin.com/mastering-bitcoin-cash/).
+on the BCH network! New to Bitcoin Cash? Find educational resources on the [FullStack.cash Documenation page](https://fullstack.cash/documentation).
 
 This project has the following goals:
 - Create a code base for a wallet that is easily forkable and extensible by JavaScript developers.
 - Provide a high-level abstraction to make it easy for new developers to add BCH and SLP wallet functionality into their apps.
 
-If you want a wallet with a graphical user interface, check out
-[Badger Wallet](http://badger.bitcoin.com/). BCH functionality is
-implemented in both wallets with [BITBOX](https://developer.bitcoin.com/bitbox), and the command
-line interface for this project is built with [oclif](https://oclif.io).
+If you want a wallet with a graphical user interface, check out [wallet.FullStack.cash](https://wallet.fullstack.cash). For a front-end friendly package, check out [minimal-slp-wallet-web](https://www.npmjs.com/package/minimal-slp-wallet-web). Bitcoin Cash functionality is implemented in all wallets with [bch-js](https://www.npmjs.com/package/@psf/bch-js), provided by [FullStack.cash](https://fullstack.cash). The command line interface for this project is built with [oclif](https://oclif.io).
 
 Also, be sure to check out the design decisions and trade-offs that went into the
 creation of this project in the [docs directory](./docs)
-
-[![Build Status](https://travis-ci.org/christroutner/bch-cli-wallet.svg?branch=master)](https://travis-ci.org/christroutner/bch-cli-wallet) [![Coverage Status](https://coveralls.io/repos/github/christroutner/bch-cli-wallet/badge.svg?branch=master)](https://coveralls.io/github/christroutner/bch-cli-wallet?branch=master) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![Greenkeeper badge](https://badges.greenkeeper.io/christroutner/bch-cli-wallet.svg)](https://greenkeeper.io/)
-
-**WARNING**: This wallet does not currently support testnet SLP tokens. It will ignore them.
 
 <!-- toc -->
 * [slp-cli-wallet](#slp-cli-wallet)
