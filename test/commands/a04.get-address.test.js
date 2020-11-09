@@ -5,6 +5,7 @@
 'use strict'
 
 const assert = require('chai').assert
+const sinon = require('sinon')
 
 const CreateWallet = require('../../src/commands/create-wallet')
 const GetAddress = require('../../src/commands/get-address')
@@ -38,14 +39,20 @@ const deleteFile = () => {
 describe('get-address', () => {
   let BITBOX
   let getAddress
+  let sandbox
 
   beforeEach(async () => {
+    sandbox = sinon.createSandbox()
     getAddress = new GetAddress()
 
     // By default, use the mocking library instead of live calls.
     BITBOX = bitboxMock
     getAddress.BITBOX = BITBOX
     await deleteFile()
+  })
+
+  afterEach(() => {
+    sandbox.restore()
   })
 
   // getAddress can be called directly by other programs, so this is tested separately.
@@ -202,5 +209,59 @@ describe('get-address', () => {
     const index = addr.indexOf('simpleledger:')
 
     assert.isAbove(index, -1, 'mainnet address')
+  })
+  it('should run the run() function', async () => {
+    const flags = {
+      name: 'test123'
+    }
+    // Mock methods that will be tested elsewhere.
+    const createWallet = new CreateWallet()
+    await createWallet.createWallet(filename)
+    sandbox.stub(getAddress, 'parse').returns({ flags: flags })
+    const addr = await getAddress.run()
+    const index = addr.indexOf('bitcoincash:')
+    assert.isAbove(index, -1, 'cash address')
+  })
+  it('should run the run() function with testnet', async () => {
+    const flags = {
+      name: 'test123'
+    }
+    // Mock methods that will be tested elsewhere.
+    const createWallet = new CreateWallet()
+    await createWallet.createWallet(filename, 'testnet')
+    sandbox.stub(getAddress, 'parse').returns({ flags: flags })
+    const addr = await getAddress.run()
+    const index = addr.indexOf('bchtest:')
+    assert.isAbove(index, -1, 'cash address')
+  })
+  it('should run the run() function with rest.bincoin.com backend', async () => {
+    const flags = {
+      name: 'test123'
+    }
+
+    // Mock methods that will be tested elsewhere.
+    const createWallet = new CreateWallet()
+    await createWallet.createWallet(filename)
+    sandbox.stub(getAddress, 'parse').returns({ flags: flags })
+
+    // const saveConfigVal = config.RESTAPI
+    // config.RESTAPI = 'bitcoin.com'
+    const addr = await getAddress.run()
+    // config.RESTAPI = saveConfigVal
+
+    const index = addr.indexOf('bitcoincash:')
+    assert.isAbove(index, -1, 'cash address')
+  })
+  it('should return error.message on empty flags', async () => {
+    try {
+      sandbox.stub(getAddress, 'parse').returns({ flags: {} })
+      await getAddress.run()
+    } catch (error) {
+      assert.include(
+        error.message,
+        'You must specify a wallet with the -n flag',
+        'Expected error message.'
+      )
+    }
   })
 })

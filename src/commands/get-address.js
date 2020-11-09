@@ -61,6 +61,7 @@ class GetAddress extends Command {
       this.log(`cash address: ${newAddress}`)
       this.log(`SLP address: ${slpAddr}`)
       this.log(`legacy address: ${legacy}`)
+      return newAddress
     } catch (err) {
       if (err.message) console.log(err.message)
       else console.log('Error in GetAddress.run: ', err)
