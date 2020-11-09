@@ -12,7 +12,7 @@ This project has the following goals:
 - Create a code base for a wallet that is easily forkable and extensible by JavaScript developers.
 - Provide a high-level abstraction to make it easy for new developers to add BCH and SLP wallet functionality into their apps.
 
-If you want a wallet with a graphical user interface, check out [wallet.FullStack.cash](https://wallet.fullstack.cash). For a front-end friendly package, check out [minimal-slp-wallet-web](https://www.npmjs.com/package/minimal-slp-wallet-web). Bitcoin Cash functionality is implemented in all wallets with [bch-js](https://www.npmjs.com/package/@psf/bch-js), and the command line interface for this project is built with [oclif](https://oclif.io).
+If you want a wallet with a graphical user interface, check out [wallet.FullStack.cash](https://wallet.fullstack.cash). For a front-end friendly package, check out [minimal-slp-wallet-web](https://www.npmjs.com/package/minimal-slp-wallet-web). Bitcoin Cash functionality is implemented in all wallets with [bch-js](https://www.npmjs.com/package/@psf/bch-js), provided by [FullStack.cash](https://fullstack.cash). The command line interface for this project is built with [oclif](https://oclif.io).
 
 Also, be sure to check out the design decisions and trade-offs that went into the
 creation of this project in the [docs directory](./docs)
