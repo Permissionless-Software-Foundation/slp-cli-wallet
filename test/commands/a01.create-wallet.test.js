@@ -5,12 +5,21 @@
 'use strict'
 
 const assert = require('chai').assert
+const sinon = require('sinon')
 const fs = require('fs')
 const CreateWallet = require('../../src/commands/create-wallet')
 const config = require('../../config')
 
 const { bitboxMock } = require('../mocks/bitbox')
 const filename = `${__dirname}/../../wallets/test123.json`
+
+// Inspect utility used for debugging.
+const util = require('util')
+util.inspect.defaultOptions = {
+  showHidden: true,
+  colors: true,
+  depth: 1
+}
 
 // Set default environment variables for unit tests.
 if (!process.env.TEST) process.env.TEST = 'unit'
@@ -25,12 +34,19 @@ const deleteFile = () => {
 }
 describe('create-wallet', () => {
   let createWallet
+  let sandbox
 
   beforeEach(async () => {
+    sandbox = sinon.createSandbox()
+
     createWallet = new CreateWallet()
     // By default, use the mocking library instead of live calls.
     createWallet.BITBOX = bitboxMock
     await deleteFile()
+  })
+
+  afterEach(() => {
+    sandbox.restore()
   })
 
   it('should exit with error status if called without a filename.', async () => {
@@ -138,6 +154,67 @@ describe('create-wallet', () => {
         'filename already exist.',
         'Should throw expected error.'
       )
+    }
+  })
+  it('validateFlags() should return true if name is supplied.', () => {
+    assert.equal(createWallet.validateFlags({ name: 'test' }), true, 'return true')
+  })
+  it('validateFlags() should throw error if name is not supplied.', () => {
+    try {
+      createWallet.validateFlags({})
+    } catch (err) {
+      assert.include(
+        err.message,
+        'You must specify a wallet with the -n flag',
+        'Expected error message.'
+      )
+    }
+  })
+  it('should run the run() function', async () => {
+    const flags = {
+      name: 'test123'
+    }
+    // Mock methods that will be tested elsewhere.
+    sandbox.stub(createWallet, 'parse').returns({ flags: flags })
+
+    const walletData = await createWallet.run()
+
+    assert.equal(walletData.network, 'mainnet', 'Expecting mainnet address')
+    assert.hasAllKeys(walletData, [
+      'network',
+      'mnemonic',
+      'balance',
+      'nextAddress',
+      'hasBalance',
+      'rootAddress',
+      'derivation',
+      'addresses',
+      'description'
+    ])
+    // console.log(`data: ${util.inspect(walletData)}`)
+  })
+  it('should return error.message on empty flags', async () => {
+    try {
+      sandbox.stub(createWallet, 'parse').returns({ flags: {} })
+      await createWallet.run()
+    } catch (error) {
+      assert.include(
+        error.message,
+        'You must specify a wallet with the -n flag',
+        'Expected error message.'
+      )
+    }
+  })
+  it('should return text, if error is missing message', async () => {
+    try {
+      const flags = {
+        name: 'test123'
+      }
+      sandbox.stub(createWallet, 'parse').returns({ flags: flags })
+      sandbox.stub(createWallet, 'createWallet').rejects('some error')
+      await createWallet.run()
+    } catch (error) {
+      assert.equal(error, 'some error', 'Expected error message.')
     }
   })
 })
