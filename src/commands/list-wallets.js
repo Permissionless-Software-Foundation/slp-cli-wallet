@@ -1,18 +1,7 @@
 'use strict'
 
-// const fs = require("fs")
-// const BB = require("bitbox-sdk/lib/bitbox-sdk").default
-
 const shelljs = require('shelljs')
 const Table = require('cli-table')
-// const qrcode = require('qrcode-terminal')
-
-const util = require('util')
-util.inspect.defaultOptions = {
-  showHidden: true,
-  colors: true,
-  depth: 1
-}
 
 const { Command } = require('@oclif/command')
 
