@@ -30,7 +30,7 @@ class CreateWallet extends Command {
 
     this.bchjs = bchjs
     this.fs = fs
-    this.config = globalConfig
+    this.localConfig = globalConfig
   }
 
   async run () {
@@ -42,7 +42,7 @@ class CreateWallet extends Command {
 
       // Determine if this is a testnet wallet or a mainnet wallet.
       if (flags.testnet) {
-        this.bchjs = new this.config.BCHLIB({ restURL: this.config.TESTNET_REST })
+        this.bchjs = new this.localConfig.BCHLIB({ restURL: this.localConfig.TESTNET_REST })
       }
 
       const filename = `${__dirname}/../../wallets/${flags.name}.json`
