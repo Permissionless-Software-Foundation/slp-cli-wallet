@@ -235,7 +235,7 @@ describe('create-wallet', () => {
 
       // Mock methods that will be tested elsewhere.
       sandbox.stub(createWallet, 'parse').returns({ flags: flags })
-      sandbox.stub(createWallet.config, 'BCHLIB').returns(bitboxMock)
+      sandbox.stub(createWallet.localConfig, 'BCHLIB').returns(bitboxMock)
 
       const walletData = await createWallet.run()
 

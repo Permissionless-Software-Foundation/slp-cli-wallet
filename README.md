@@ -66,7 +66,7 @@ $ npm install -g slp-cli-wallet
 $ slp-cli-wallet COMMAND
 running command...
 $ slp-cli-wallet (-v|--version|version)
-slp-cli-wallet/2.0.1 linux-x64 node-v14.14.0
+slp-cli-wallet/2.0.1 linux-x64 node-v14.15.0
 $ slp-cli-wallet --help [COMMAND]
 USAGE
   $ slp-cli-wallet COMMAND
@@ -160,7 +160,8 @@ USAGE
 
 OPTIONS
   -n, --name=name  Name of wallet
-  -t, --token      Generate a simpledger: token address
+  -s, --slp        Generate a simpledger: token address
+  -t, --testnet    Create a testnet wallet
 ```
 
 _See code: [src/commands/get-address.js](https://github.com/christroutner/slp-cli-wallet/blob/v2.0.1/src/commands/get-address.js)_
