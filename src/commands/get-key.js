@@ -18,7 +18,7 @@ const appUtils = new AppUtils()
 const config = require('../../config')
 
 // Mainnet by default.
-const BITBOX = new config.BCHLIB({
+const bchjs = new config.BCHLIB({
   restURL: config.MAINNET_REST,
   apiToken: config.JWT
 })
@@ -35,7 +35,7 @@ class GetKey extends Command {
   constructor (argv, config) {
     super(argv, config)
 
-    this.BITBOX = BITBOX
+    this.bchjs = bchjs
   }
 
   async run () {
@@ -47,7 +47,7 @@ class GetKey extends Command {
 
       // Determine if this is a testnet wallet or a mainnet wallet.
       if (flags.testnet) {
-        this.BITBOX = new config.BCHLIB({ restURL: config.TESTNET_REST })
+        this.bchjs = new config.BCHLIB({ restURL: config.TESTNET_REST })
       }
 
       // Generate an absolute filename from the name.
@@ -68,7 +68,7 @@ class GetKey extends Command {
       this.log(`${newAddress}`)
       // this.log(`legacy address: ${legacy}`)
 
-      const slpAddr = this.BITBOX.SLP.Address.toSLPAddress(newAddress)
+      const slpAddr = this.bchjs.SLP.Address.toSLPAddress(newAddress)
       console.log(`${slpAddr}`)
     } catch (err) {
       if (err.message) console.log(err.message)
@@ -84,25 +84,22 @@ class GetKey extends Command {
       // console.log(`walletInfo: ${JSON.stringify(walletInfo, null, 2)}`)
 
       // root seed buffer
-      let rootSeed
-      if (config.RESTAPI === 'bitcoin.com') {
-        rootSeed = this.BITBOX.Mnemonic.toSeed(walletInfo.mnemonic)
-      } else rootSeed = await this.BITBOX.Mnemonic.toSeed(walletInfo.mnemonic)
+      const rootSeed = await this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
 
       // master HDNode
       let masterHDNode
       if (walletInfo.network === 'testnet') {
-        masterHDNode = this.BITBOX.HDNode.fromSeed(rootSeed, 'testnet')
-      } else masterHDNode = this.BITBOX.HDNode.fromSeed(rootSeed)
+        masterHDNode = this.bchjs.HDNode.fromSeed(rootSeed, 'testnet')
+      } else masterHDNode = this.bchjs.HDNode.fromSeed(rootSeed)
 
       // HDNode of BIP44 account
-      const account = this.BITBOX.HDNode.derivePath(
+      const account = this.bchjs.HDNode.derivePath(
         masterHDNode,
         `m/44'/${walletInfo.derivation}'/0'`
       )
 
       // derive an external change address HDNode
-      const change = this.BITBOX.HDNode.derivePath(
+      const change = this.bchjs.HDNode.derivePath(
         account,
         `0/${walletInfo.nextAddress}`
       )
@@ -114,14 +111,13 @@ class GetKey extends Command {
       await appUtils.saveWallet(filename, walletInfo)
 
       // get the cash address
-      const newAddress = this.BITBOX.HDNode.toCashAddress(change)
-      // const legacy = BITBOX.HDNode.toLegacyAddress(change)
+      const newAddress = this.bchjs.HDNode.toCashAddress(change)
 
       // get the private key
-      const newKey = this.BITBOX.HDNode.toWIF(change)
+      const newKey = this.bchjs.HDNode.toWIF(change)
 
-      const ec = this.BITBOX.ECPair.fromWIF(newKey)
-      const pubKey = this.BITBOX.ECPair.toPublicKey(ec)
+      const ec = this.bchjs.ECPair.fromWIF(newKey)
+      const pubKey = this.bchjs.ECPair.toPublicKey(ec)
 
       return {
         priv: newKey,

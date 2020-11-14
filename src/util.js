@@ -74,10 +74,7 @@ class AppUtils {
       }
 
       // root seed buffer
-      let rootSeed
-      if (config.RESTAPI === 'bitcoin.com') {
-        rootSeed = this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
-      } else rootSeed = await this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
+      const rootSeed = await this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
 
       // master HDNode
       let masterHDNode
@@ -184,10 +181,7 @@ class AppUtils {
     if (!walletInfo.mnemonic) throw new Error('mnemonic is undefined!')
 
     // root seed buffer
-    let rootSeed
-    if (config.RESTAPI === 'bitcoin.com') {
-      rootSeed = this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
-    } else rootSeed = await this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
+    const rootSeed = await this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
 
     // master HDNode
     let masterHDNode
