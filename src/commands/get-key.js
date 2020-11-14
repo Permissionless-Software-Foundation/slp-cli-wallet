@@ -84,10 +84,7 @@ class GetKey extends Command {
       // console.log(`walletInfo: ${JSON.stringify(walletInfo, null, 2)}`)
 
       // root seed buffer
-      let rootSeed
-      if (config.RESTAPI === 'bitcoin.com') {
-        rootSeed = this.BITBOX.Mnemonic.toSeed(walletInfo.mnemonic)
-      } else rootSeed = await this.BITBOX.Mnemonic.toSeed(walletInfo.mnemonic)
+      const rootSeed = await this.BITBOX.Mnemonic.toSeed(walletInfo.mnemonic)
 
       // master HDNode
       let masterHDNode
