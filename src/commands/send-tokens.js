@@ -206,21 +206,21 @@ class SendTokens extends Command {
 
       // Send dust transaction representing tokens being sent.
       transactionBuilder.addOutput(
-        this.bchjs.Address.toLegacyAddress(sendToAddr),
+        this.bchjs.SLP.Address.toLegacyAddress(sendToAddr),
         546
       )
 
       // Return any token change back to the sender.
       if (outputs > 1) {
         transactionBuilder.addOutput(
-          this.bchjs.Address.toLegacyAddress(changeAddress),
+          this.bchjs.SLP.Address.toLegacyAddress(changeAddress),
           546
         )
       }
 
       // Last output: send the change back to the wallet.
       transactionBuilder.addOutput(
-        this.bchjs.Address.toLegacyAddress(changeAddress),
+        this.bchjs.SLP.Address.toLegacyAddress(changeAddress),
         remainder
       )
       // console.log(`utxo: ${JSON.stringify(utxo, null, 2)}`)
@@ -276,7 +276,7 @@ class SendTokens extends Command {
 
       return hex
     } catch (err) {
-      console.log('Error in sendTokens()')
+      console.log('Error in sendTokens() ', err)
       throw err
     }
   }
