@@ -30,7 +30,7 @@ const appUtils = new AppUtils()
 
 // Mainnet by default
 // console.log(`config.RESTAPI: ${config.RESTAPI}`)
-const BITBOX = new config.BCHLIB({
+const bchjs = new config.BCHLIB({
   restURL: config.MAINNET_REST,
   apiToken: config.JWT
 })
@@ -46,7 +46,7 @@ class SendTokens extends Command {
     super(argv, config)
     // _this = this
 
-    this.BITBOX = BITBOX
+    this.bchjs = bchjs
     this.appUtils = appUtils // Allows for easy mocking for unit tests.
   }
 
@@ -69,13 +69,13 @@ class SendTokens extends Command {
 
       // Determine if this is a testnet wallet or a mainnet wallet.
       if (walletInfo.network === 'testnet') {
-        this.BITBOX = new config.BCHLIB({ restURL: config.TESTNET_REST })
-        appUtils.BITBOX = this.BITBOX
+        this.bchjs = new config.BCHLIB({ restURL: config.TESTNET_REST })
+        appUtils.bchjs = this.bchjs
       }
 
       // Update balances before sending.
       const updateBalances = new UpdateBalances()
-      updateBalances.BITBOX = this.BITBOX
+      updateBalances.bchjs = this.bchjs
       walletInfo = await updateBalances.updateBalances(flags)
       // console.log(`walletInfo: ${JSON.stringify(walletInfo, null, 2)}`)
 
@@ -90,8 +90,8 @@ class SendTokens extends Command {
       // Instatiate the Send class so this function can reuse its selectUTXO() code.
       const send = new Send()
       if (walletInfo.network === 'testnet') {
-        send.BITBOX = new config.BCHLIB({ restURL: config.TESTNET_REST })
-        send.appUtils.BITBOX = new config.BCHLIB({
+        send.bchjs = new config.BCHLIB({ restURL: config.TESTNET_REST })
+        send.appUtils.bchjs = new config.BCHLIB({
           restURL: config.TESTNET_REST
         })
       }
@@ -112,7 +112,7 @@ class SendTokens extends Command {
 
       // Generate a new address, for sending change to.
       const getAddress = new GetAddress()
-      getAddress.BITBOX = this.BITBOX
+      getAddress.bchjs = this.bchjs
       const changeAddress = await getAddress.getAddress(filename)
       // console.log(`changeAddress: ${changeAddress}`)
 
@@ -152,8 +152,8 @@ class SendTokens extends Command {
       // instance of transaction builder
       let transactionBuilder
       if (walletInfo.network === 'testnet') {
-        transactionBuilder = new this.BITBOX.TransactionBuilder('testnet')
-      } else transactionBuilder = new this.BITBOX.TransactionBuilder()
+        transactionBuilder = new this.bchjs.TransactionBuilder('testnet')
+      } else transactionBuilder = new this.bchjs.TransactionBuilder()
 
       // const satoshisToSend = Math.floor(bch * 100000000)
       // console.log(`Amount to send in satoshis: ${satoshisToSend}`)
@@ -171,7 +171,7 @@ class SendTokens extends Command {
 
       // get byte count to calculate fee. paying 1 sat
       // Note: This may not be totally accurate. Just guessing on the byteCount size.
-      // const byteCount = this.BITBOX.BitcoinCash.getByteCount(
+      // const byteCount = this.bchjs.BitcoinCash.getByteCount(
       //   { P2PKH: 3 },
       //   { P2PKH: 5 }
       // )
@@ -195,10 +195,10 @@ class SendTokens extends Command {
       const {
         script,
         outputs
-      } = this.BITBOX.SLP.TokenType1.generateSendOpReturn(tokenUtxos, qty)
+      } = this.bchjs.SLP.TokenType1.generateSendOpReturn(tokenUtxos, qty)
       // console.log(`script: ${JSON.stringify(script, null, 2)}`)
 
-      // const data = BITBOX.Script.encode(script)
+      // const data = bchjs.Script.encode(script)
       // console.log(`data: ${JSON.stringify(data, null, 2)}`)
 
       // Add OP_RETURN as first output.
@@ -206,21 +206,21 @@ class SendTokens extends Command {
 
       // Send dust transaction representing tokens being sent.
       transactionBuilder.addOutput(
-        this.BITBOX.Address.toLegacyAddress(sendToAddr),
+        this.bchjs.Address.toLegacyAddress(sendToAddr),
         546
       )
 
       // Return any token change back to the sender.
       if (outputs > 1) {
         transactionBuilder.addOutput(
-          this.BITBOX.Address.toLegacyAddress(changeAddress),
+          this.bchjs.Address.toLegacyAddress(changeAddress),
           546
         )
       }
 
       // Last output: send the change back to the wallet.
       transactionBuilder.addOutput(
-        this.BITBOX.Address.toLegacyAddress(changeAddress),
+        this.bchjs.Address.toLegacyAddress(changeAddress),
         remainder
       )
       // console.log(`utxo: ${JSON.stringify(utxo, null, 2)}`)
@@ -231,7 +231,7 @@ class SendTokens extends Command {
         utxo.hdIndex
       )
       // console.log(`change: ${JSON.stringify(change, null, 2)}`)
-      const keyPair = this.BITBOX.HDNode.toKeyPair(change)
+      const keyPair = this.bchjs.HDNode.toKeyPair(change)
 
       // Sign the transaction with the private key for the UTXO paying the fees.
       let redeemScript
@@ -254,7 +254,7 @@ class SendTokens extends Command {
           thisUtxo.hdIndex
         )
 
-        const slpKeyPair = this.BITBOX.HDNode.toKeyPair(slpChangeAddr)
+        const slpKeyPair = this.bchjs.HDNode.toKeyPair(slpChangeAddr)
         // console.log(`slpKeyPair: ${JSON.stringify(slpKeyPair, null, 2)}`)
 
         transactionBuilder.sign(
