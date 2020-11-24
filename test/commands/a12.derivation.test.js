@@ -14,9 +14,7 @@ const Derivation = require('../../src/commands/derivation')
 
 // Mock data
 const testwallet = require('../mocks/testwallet.json')
-const {
-  bitboxMock
-} = require('../mocks/bitbox')
+const { bitboxMock } = require('../mocks/bitbox')
 // const utilMocks = require('../mocks/util')
 
 // Inspect utility used for debugging.
@@ -64,23 +62,6 @@ describe('#derivation', () => {
       }
     })
 
-    it('should throw error is save flag is specified without argument', () => {
-      try {
-        const flags = {
-          name: 'testwallet',
-          save: undefined
-        }
-
-        derivation.validateFlags(flags)
-      } catch (err) {
-        assert.include(
-          err.message,
-          'Flag --save expects a value',
-          'Expected error message.'
-        )
-      }
-    })
-
     it('should throw error if save argument is not an integer', () => {
       try {
         const flags = {
@@ -109,6 +90,7 @@ describe('#derivation', () => {
         assert.include(err.message, 'Cannot read pro')
       }
     })
+
     it('should save the new derivation path to the wallet file', () => {
       const filename = `${__dirname}/../../wallets/test123.json`
 
@@ -136,6 +118,7 @@ describe('#derivation', () => {
         assert.include(err.message, 'test error')
       }
     })
+
     it('should run the run method', async () => {
       const flags = {
         name: 'test123',
