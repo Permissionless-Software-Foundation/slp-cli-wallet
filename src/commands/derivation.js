@@ -37,7 +37,7 @@ class Derivation extends Command {
       }
     } catch (err) {
       if (err.message) console.log(err.message)
-      else console.log('Error in .run: ', err)
+      console.log('Error in Derivation.run: ', err)
       // console.log(`Error in derivation.js/run: `, err)
     }
   }
@@ -62,13 +62,17 @@ class Derivation extends Command {
   validateFlags (flags) {
     // Exit if wallet not specified.
     const name = flags.name
-    if (!name || name === '') { throw new Error('You must specify a wallet with the -n flag.') }
+    if (!name || name === '') {
+      throw new Error('You must specify a wallet with the -n flag.')
+    }
 
     const save = flags.save
-    if (save && save === '') { throw new Error('You must specify a new derivation path to save.') }
-
-    const intCheck = parseInt(save)
-    if (save && isNaN(intCheck)) { throw new Error('Derivation path must be an integer.') }
+    if (save) {
+      const intCheck = parseInt(save)
+      if (isNaN(intCheck)) {
+        throw new Error('Derivation path must be an integer.')
+      }
+    }
 
     return true
   }

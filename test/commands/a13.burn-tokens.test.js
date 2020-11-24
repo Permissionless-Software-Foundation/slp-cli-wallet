@@ -356,6 +356,7 @@ describe('#burn-tokens', () => {
       sandbox.stub(burnTokens, 'prepBurnTokens').resolves(false)
 
       await burnTokens.run(flags)
+      // IS THIS TEST IMPLEMENTED THE WAY IT IS EXPECTED? because the header says "should return false but there is no false check and it actually returns undefined"
     })
   })
 })
