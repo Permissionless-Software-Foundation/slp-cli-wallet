@@ -61,7 +61,9 @@ class Send extends Command {
       }
 
       // Update balances before sending.
-      const updateBalances = new UpdateBalances(undefined, { bchjs: this.bchjs })
+      const updateBalances = new UpdateBalances(undefined, {
+        bchjs: this.bchjs
+      })
       updateBalances.bchjs = this.bchjs
       walletInfo = await updateBalances.updateBalances(flags)
 
@@ -235,6 +237,7 @@ class Send extends Command {
             console.log(
               'warning: invalid UTXO found. You may need to wait for the indexer to catch up.'
             )
+            // console.log(`thisUTXO: ${JSON.stringify(thisUTXO, null, 2)}`)
             continue
           }
           // console.log(`isValid: `, isValid)

@@ -148,6 +148,8 @@ class AppUtils {
   // Returns false if UTXO is spent.
   async isValidUtxo (utxo) {
     try {
+      // console.log(`this.bchjs.restURL: ${this.bchjs.restURL}`)
+
       // Input validation.
       if (!utxo.txid) throw new Error('utxo does not have a txid property')
       if (!utxo.vout && utxo.vout !== 0) {
