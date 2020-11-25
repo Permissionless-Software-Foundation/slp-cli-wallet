@@ -37,7 +37,8 @@
     "prettier": "^1.18.2",
     "semantic-release": "^17.0.0",
     "sinon": "^9.0.0",
-    "standard": "^14.3.4"
+    "standard": "^14.3.4",
+    "test-console": "^1.1.0"
   },
   "engines": {
     "node": ">=8.0.0"
@@ -68,6 +69,7 @@
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "oclif-dev manifest && oclif-dev readme",
     "test": "npm run lint; TEST=unit nyc --reporter=text mocha --timeout 25000 test/commands/",
+    "test:utils": "npm run lint; TEST=unit nyc --reporter=text mocha --timeout 25000 test/commands/a06.util.test.js",
     "test:integration": "RESTAPI=fullstack.cash TEST=integration nyc --reporter=text mocha --timeout 25000 test/commands/",
     "test:integration:local": "RESTAPI=local TEST=integration nyc --reporter=text mocha  --timeout 25000",
     "test:integration:decatur": "RESTAPI=decatur TEST=integration nyc --reporter=text mocha  --timeout 25000",
