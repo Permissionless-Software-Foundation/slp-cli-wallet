@@ -68,11 +68,16 @@ class GetKey extends Command {
       this.log(`${newAddress}`)
       // this.log(`legacy address: ${legacy}`)
 
-      const slpAddr = this.bchjs.SLP.Address.toSLPAddress(newAddress)
-      console.log(`${slpAddr}`)
+      const slpAddress = this.bchjs.SLP.Address.toSLPAddress(newAddress)
+      console.log(`${slpAddress}`)
+      return {
+        cashAddress: newAddress,
+        slpAddress: slpAddress
+      }
     } catch (err) {
       if (err.message) console.log(err.message)
       else console.log('Error in GetKey.run: ', err)
+      return null
     }
   }
 
