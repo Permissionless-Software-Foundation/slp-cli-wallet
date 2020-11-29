@@ -5,6 +5,7 @@
 'use strict'
 
 const assert = require('chai').assert
+const sinon = require('sinon')
 
 const CreateWallet = require('../../src/commands/create-wallet')
 const GetKey = require('../../src/commands/get-key')
@@ -36,14 +37,64 @@ const deleteFile = () => {
 describe('get-key', () => {
   let BITBOX
   let getKey
+  let sandbox
 
   beforeEach(async () => {
+    sandbox = sinon.createSandbox()
+
     getKey = new GetKey()
 
     // By default, use the mocking library instead of live calls.
     BITBOX = bitboxMock
     getKey.BITBOX = BITBOX
     await deleteFile()
+  })
+
+  afterEach(() => {
+    sandbox.restore()
+  })
+
+  it('run(): should run the function', async () => {
+    const flags = {
+      name: 'test123',
+      testnet: true
+    }
+    // Mock methods that will be tested elsewhere.
+    sandbox.stub(getKey, 'parse').returns({ flags: flags })
+
+    const newWallet = new CreateWallet()
+    await newWallet.createWallet(filename, 'testnet')
+    const result = await getKey.run()
+    assert.include(result.cashAddress, 'bchtest:')
+    assert.include(result.slpAddress, 'slptest:')
+  })
+
+  it('run(): should run the function in mainnet', async () => {
+    const flags = {
+      name: 'test123'
+    }
+    // Mock methods that will be tested elsewhere.
+    sandbox.stub(getKey, 'parse').returns({ flags: flags })
+
+    const newWallet = new CreateWallet()
+    await newWallet.createWallet(filename, false)
+    const result = await getKey.run()
+    assert.include(result.cashAddress, 'bitcoincash:')
+    assert.include(result.slpAddress, 'simpleledger:')
+  })
+
+  it('run(): should return 0 and display error.message on empty flags', async () => {
+    sandbox.stub(getKey, 'parse').returns({ flags: {} })
+
+    const result = await getKey.run()
+    assert.equal(result, null)
+  })
+
+  it('run(): should handle an error without a message', async () => {
+    sandbox.stub(getKey, 'parse').throws({})
+
+    const result = await getKey.run()
+    assert.equal(result, null)
   })
 
   // getKey can be called directly by other programs, so this is tested separately.
@@ -68,12 +119,30 @@ describe('get-key', () => {
     }
   })
 
+  it('should return on proper flags passed', () => {
+    assert.equal(
+      getKey.validateFlags({ name: 'test' }),
+      true,
+      'return true'
+    )
+  })
+
   it('should throw error if wallet file not found.', async () => {
     try {
       await getKey.getPair('doesnotexist')
     } catch (err) {
       assert.include(err.message, 'Could not open', 'Expected error message.')
     }
+  })
+
+  it('create keys pair for mainnet', async () => {
+    if (process.env.TEST !== 'unit') { getKey.BITBOX = new config.BCHLIB({ restURL: config.MAINNET_REST }) }
+    // Create a mainnet wallet
+    const newWallet = new CreateWallet()
+    await newWallet.createWallet(filename, false)
+    // Generate a new address
+    const result = await getKey.getPair(filename)
+    assert.include(result.pub, 'bitcoincash:')
   })
 
   it('increments the nextAddress property of the wallet.', async () => {
