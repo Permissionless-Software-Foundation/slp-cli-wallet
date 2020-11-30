@@ -29,20 +29,20 @@ util.inspect.defaultOptions = {
 if (!process.env.TEST) process.env.TEST = 'unit'
 
 describe('#send-tokens', () => {
-  let BITBOX
+  let bchjs
   let mockedWallet
   let sendTokens
   let sandbox
 
   beforeEach(() => {
     // By default, use the mocking library instead of live calls.
-    BITBOX = bitboxMock
+    bchjs = bitboxMock
     mockedWallet = Object.assign({}, testwallet) // Clone the testwallet
 
     sandbox = sinon.createSandbox()
 
     sendTokens = new SendTokens()
-    sendTokens.BITBOX = BITBOX
+    sendTokens.bchjs = bchjs
   })
 
   afterEach(() => {
@@ -229,7 +229,7 @@ describe('#send-tokens', () => {
   // describe('#sendTokens', () => {
   //   it('should send SLP on testnet', async () => {
   //     // Do not use the mocked version of bch-js for these tests.
-  //     sendTokens.BITBOX = new config.BCHLIB({
+  //     sendTokens.bchjs = new config.BCHLIB({
   //       restURL: config.MAINNET_REST,
   //       apiToken: config.JWT
   //     })
