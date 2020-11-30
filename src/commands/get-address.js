@@ -51,16 +51,19 @@ class GetAddress extends Command {
 
       const newAddress = await this.getAddress(filename, flags)
 
-      // Display the address as a QR code.
-      qrcode.generate(newAddress, { small: true })
-
       const slpAddr = this.bchjs.SLP.Address.toSLPAddress(newAddress)
       const legacy = this.bchjs.Address.toLegacyAddress(newAddress)
 
-      // Display the address to the user.
-      this.log(`cash address: ${newAddress}`)
-      this.log(`SLP address: ${slpAddr}`)
-      this.log(`legacy address: ${legacy}`)
+      // Cut down on screen spam when running unit tests.
+      if (process.env.TEST !== 'unit') {
+        // Display the address as a QR code.
+        qrcode.generate(newAddress, { small: true })
+
+        // Display the address to the user.
+        this.log(`cash address: ${newAddress}`)
+        this.log(`SLP address: ${slpAddr}`)
+        this.log(`legacy address: ${legacy}`)
+      }
 
       return newAddress
     } catch (err) {
