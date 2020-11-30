@@ -56,13 +56,16 @@ class GetKey extends Command {
       const newPair = await this.getPair(filename)
       const newAddress = newPair.pub
 
-      // Display the Private Key
-      qrcode.generate(newPair.priv, { small: true })
-      this.log(`Private Key: ${newPair.priv}`)
-      this.log(`Public Key: ${newPair.pubKey}`)
+      // Cut down on screen spam when running unit tests.
+      if (process.env.TEST !== 'unit') {
+        // Display the Private Key
+        qrcode.generate(newPair.priv, { small: true })
+        this.log(`Private Key: ${newPair.priv}`)
+        this.log(`Public Key: ${newPair.pubKey}`)
 
-      // Display the address as a QR code.
-      qrcode.generate(newAddress, { small: true })
+        // Display the address as a QR code.
+        qrcode.generate(newAddress, { small: true })
+      }
 
       // Display the address to the user.
       this.log(`${newAddress}`)

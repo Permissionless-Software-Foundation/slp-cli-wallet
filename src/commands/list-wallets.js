@@ -62,7 +62,12 @@ class ListWallets extends Command {
     for (let i = 0; i < data.length; i++) table.push(data[i])
 
     const tableStr = table.toString()
-    console.log(tableStr)
+
+    // Cut down on screen spam when running unit tests.
+    if (process.env.TEST !== 'unit') {
+      console.log(tableStr)
+    }
+
     return tableStr
   }
 }
