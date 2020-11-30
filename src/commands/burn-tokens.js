@@ -65,7 +65,7 @@ class BurnTokens extends Command {
       this.validateFlags(flags)
 
       const burnConfig = await this.prepBurnTokens(flags)
-      if (!burnConfig) return
+      if (!burnConfig) return 0
 
       // Send the token, transfer change to the new address
       const hex = await this.burnTokens(burnConfig)
@@ -73,6 +73,8 @@ class BurnTokens extends Command {
 
       const txid = await this.appUtils.broadcastTx(hex)
       this.appUtils.displayTxid(txid, burnConfig.walletInfo.network)
+
+      return 1
     } catch (err) {
       // if (err.message) console.log(err.message)
       // else console.log(`Error in .run: `, err)

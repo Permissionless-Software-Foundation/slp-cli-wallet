@@ -343,7 +343,7 @@ describe('#burn-tokens', () => {
       }
     })
 
-    it('should exit if prepBurnTokens returns false', async () => {
+    it('should return 0 prepBurnTokens returns false', async () => {
       const flags = {
         name: 'test123',
         qty: 1,
@@ -355,8 +355,9 @@ describe('#burn-tokens', () => {
       sandbox.stub(burnTokens, 'parse').returns({ flags: flags })
       sandbox.stub(burnTokens, 'prepBurnTokens').resolves(false)
 
-      await burnTokens.run(flags)
-      // IS THIS TEST IMPLEMENTED THE WAY IT IS EXPECTED? because the header says "should return false but there is no false check and it actually returns undefined"
+      const result = await burnTokens.run(flags)
+
+      assert.equal(result, 0)
     })
   })
 })
