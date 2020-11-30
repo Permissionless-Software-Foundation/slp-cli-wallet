@@ -12,7 +12,7 @@ const appUtils = new AppUtils()
 const config = require('../../config')
 
 // Mainnet by default.
-const BITBOX = new config.BCHLIB({ restURL: config.MAINNET_REST })
+const bchjs = new config.BCHLIB({ restURL: config.MAINNET_REST })
 
 // Used for debugging and iterrogating JS objects.
 const util = require('util')
@@ -26,7 +26,7 @@ class SignMessage extends Command {
   constructor (argv, config) {
     super(argv, config)
 
-    this.BITBOX = BITBOX
+    this.bchjs = bchjs
   }
 
   async run () {
@@ -38,7 +38,7 @@ class SignMessage extends Command {
 
       // Determine if this is a testnet wallet or a mainnet wallet.
       if (flags.testnet) {
-        this.BITBOX = new config.BCHLIB({ restURL: config.TESTNET_REST })
+        this.bchjs = new config.BCHLIB({ restURL: config.TESTNET_REST })
       }
 
       // Generate an absolute filename from the name.
@@ -47,7 +47,7 @@ class SignMessage extends Command {
       const signM = await this.sign(
         filename,
         flags.sendAddrIndex,
-        flags.signTheMessage
+        flags.message
       )
       // console.log(signM)
       const mySignature = signM.sign
@@ -60,40 +60,40 @@ class SignMessage extends Command {
     }
   }
 
-  async sign (filename, sendAddrIndex, signTheMessage) {
+  async sign (filename, sendAddrIndex, message) {
     try {
       // const filename = `${__dirname}/../../wallets/${name}.json`
       const walletInfo = appUtils.openWallet(filename)
       // console.log(`walletInfo: ${JSON.stringify(walletInfo, null, 2)}`)
 
       // root seed buffer
-      const rootSeed = await this.BITBOX.Mnemonic.toSeed(walletInfo.mnemonic)
+      const rootSeed = await this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
 
       // master HDNode
       let masterHDNode
       if (walletInfo.network === 'testnet') {
-        masterHDNode = this.BITBOX.HDNode.fromSeed(rootSeed, 'testnet')
-      } else masterHDNode = this.BITBOX.HDNode.fromSeed(rootSeed)
+        masterHDNode = this.bchjs.HDNode.fromSeed(rootSeed, 'testnet')
+      } else masterHDNode = this.bchjs.HDNode.fromSeed(rootSeed)
 
       // HDNode of BIP44 account
-      const account = this.BITBOX.HDNode.derivePath(
+      const account = this.bchjs.HDNode.derivePath(
         masterHDNode,
         `m/44'/${walletInfo.derivation}'/0'`
       )
       // derive an external change address HDNode
-      const change = this.BITBOX.HDNode.derivePath(
+      const change = this.bchjs.HDNode.derivePath(
         account,
         `0/${sendAddrIndex}`
       )
 
       // get the cash address
-      // const pubKeyAddr = this.BITBOX.HDNode.toCashAddress(change)
+      // const pubKeyAddr = this.bchjs.HDNode.toCashAddress(change)
       // get the private key
-      const privKeyWIF = this.BITBOX.HDNode.toWIF(change)
+      const privKeyWIF = this.bchjs.HDNode.toWIF(change)
       // sign and verify
-      const signature = BITBOX.BitcoinCash.signMessageWithPrivKey(
+      const signature = bchjs.BitcoinCash.signMessageWithPrivKey(
         privKeyWIF,
-        signTheMessage
+        message
       )
 
       return {
@@ -118,8 +118,8 @@ class SignMessage extends Command {
       throw new Error('You must specify a address index with the -i flag.')
     }
 
-    const signTheMessage = flags.signTheMessage
-    if (!signTheMessage || signTheMessage === '') {
+    const message = flags.message
+    if (!message || message === '') {
       throw new Error('You must specify a sign with the -s flag.')
     }
 
@@ -132,7 +132,7 @@ SignMessage.description = 'Sign message'
 SignMessage.flags = {
   name: flags.string({ char: 'n', description: 'Name of wallet' }),
   sendAddrIndex: flags.string({ char: 'i', description: 'Address index' }),
-  signTheMessage: flags.string({ char: 's', description: 'Sign message' })
+  message: flags.string({ char: 'm', description: 'Message to sign. (Wrap in quotes)' })
 }
 
 module.exports = SignMessage

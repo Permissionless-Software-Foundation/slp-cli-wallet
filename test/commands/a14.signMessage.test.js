@@ -11,7 +11,7 @@ const SignMessage = require('../../src/commands/sign-message')
 const config = require('../../config')
 
 const { bitboxMock } = require('../mocks/bitbox')
-const BITBOXTEST = new config.BCHLIB({ restURL: config.MAINNET_REST })
+const bchjs = new config.BCHLIB({ restURL: config.MAINNET_REST })
 
 // Inspect utility used for debugging.
 const util = require('util')
@@ -31,7 +31,7 @@ describe('sign-message', () => {
     signMessage = new SignMessage()
 
     // By default, use the mocking library instead of live calls.
-    signMessage.BITBOX = bitboxMock
+    signMessage.bchjs = bitboxMock
   })
 
   // signMessage can be called directly by other programs, so this is tested separately.
@@ -93,7 +93,7 @@ describe('sign-message', () => {
       const flags = {
         name: 'testwallet',
         sendAddrIndex: 1,
-        signTheMessage: 'abcd'
+        message: 'abcd'
       }
 
       const result = signMessage.validateFlags(flags)
@@ -116,7 +116,7 @@ describe('sign-message', () => {
       'H6PDQ0BXrFzSJwkhT/pk2LcOtvTqNv8N3Sx3oZl4+d/PD+OzIicaZ54K9j8vjxjG19GGFMcT0TeENT+4D+VpmvA='
     const message = 'my_first_signature'
 
-    const result = BITBOXTEST.BitcoinCash.verifyMessage(
+    const result = bchjs.BitcoinCash.verifyMessage(
       pubKeyAddrr,
       signature,
       message
