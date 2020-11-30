@@ -529,7 +529,9 @@ class UpdateBalances extends Command {
 
       // Get utxos associated with this address.
       // const u = await this.bchjs.Address.utxo(cashAddr)
-      const utxos = await this.bchjs.Blockbook.utxo(cashAddr)
+      // const utxos = await this.bchjs.Blockbook.utxo(cashAddr)
+      const fulcrumUtxos = await this.bchjs.Electrumx.utxo(cashAddr)
+      const utxos = fulcrumUtxos.utxos
       // console.log(`utxos: ${JSON.stringify(utxos, null, 2)}`)
 
       // Figure out which UTXOs are associated with SLP tokens.
