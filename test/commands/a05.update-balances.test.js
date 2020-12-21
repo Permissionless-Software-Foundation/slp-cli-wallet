@@ -115,8 +115,8 @@ describe('#update-balances.js', () => {
       // Mock external calls if this is a unit test.
       if (process.env.TEST === 'unit') {
         sandbox
-          .stub(updateBalances.bchjs.Blockbook, 'utxo')
-          .resolves(updateBalancesMocks.mockTokenUtxo)
+          .stub(updateBalances.bchjs.Electrumx, 'utxo')
+          .resolves(updateBalancesMocks.mockElectrumxTokenUtxos)
 
         sandbox
           .stub(updateBalances.bchjs.SLP.Utils, 'tokenUtxoDetails')
