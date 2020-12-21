@@ -22,7 +22,9 @@ class RemoveWallet extends Command {
 
   async removeWallet (filename) {
     const result = shelljs.rm(filename)
+
     if (!shelljs.error()) return result
+
     throw new Error(result.stderr || 'Error in removeWallet().')
   }
 
@@ -30,7 +32,9 @@ class RemoveWallet extends Command {
   validateFlags (flags) {
     // Exit if wallet not specified.
     const name = flags.name
-    if (!name || name === '') { throw new Error('You must specify a wallet with the -n flag.') }
+    if (!name || name === '') {
+      throw new Error('You must specify a wallet with the -n flag.')
+    }
 
     return true
   }

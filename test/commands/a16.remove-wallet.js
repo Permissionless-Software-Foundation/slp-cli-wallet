@@ -9,11 +9,11 @@ const sinon = require('sinon')
 
 const CreateWallet = require('../../src/commands/create-wallet')
 const RemoveWallet = require('../../src/commands/remove-wallet')
-const config = require('../../config')
+// const config = require('../../config')
 
 const { bitboxMock } = require('../mocks/bitbox')
 const fs = require('fs')
-const mock = require('mock-fs')
+// const mock = require('mock-fs')
 
 const filename = `${__dirname}/../../wallets/test123.json`
 
@@ -98,7 +98,11 @@ describe('remove-wallet', () => {
     try {
       await removeWallet.run()
     } catch (err) {
-      assert.include(err.message, 'rm: no such file or directory', 'Expected error message.')
+      assert.include(
+        err.message,
+        'rm: no such file or directory',
+        'Expected error message.'
+      )
     }
   })
 
@@ -123,7 +127,11 @@ describe('remove-wallet', () => {
     try {
       await removeWallet.run()
     } catch (err) {
-      assert.include(err.message, "Cannot read property 'name' of undefined", 'Expected error message.')
+      assert.include(
+        err.message,
+        "Cannot read property 'name' of undefined",
+        'Expected error message.'
+      )
     }
   })
 
@@ -138,7 +146,11 @@ describe('remove-wallet', () => {
     try {
       await removeWallet.removeWallet(undefined)
     } catch (err) {
-      assert.include(err.message, 'rm: no paths given', 'Expected error message.')
+      assert.include(
+        err.message,
+        'rm: no paths given',
+        'Expected error message.'
+      )
     }
   })
 
@@ -146,7 +158,11 @@ describe('remove-wallet', () => {
     try {
       await removeWallet.removeWallet('non-existing')
     } catch (err) {
-      assert.include(err.message, 'rm: no such file or directory: non-existing', 'Expected error message.')
+      assert.include(
+        err.message,
+        'rm: no such file or directory: non-existing',
+        'Expected error message.'
+      )
     }
   })
 })
