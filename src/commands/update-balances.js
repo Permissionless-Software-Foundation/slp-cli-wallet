@@ -528,9 +528,8 @@ class UpdateBalances extends Command {
       // console.log(`cashAddr: ${cashAddr}`)
 
       // Get utxos associated with this address.
-      // const u = await this.bchjs.Address.utxo(cashAddr)
-      // const utxos = await this.bchjs.Blockbook.utxo(cashAddr)
       const fulcrumUtxos = await this.bchjs.Electrumx.utxo(cashAddr)
+      // console.log(`fulcrumUtxos: ${JSON.stringify(fulcrumUtxos, null, 2)}`)
       const utxos = fulcrumUtxos.utxos
       // console.log(`utxos: ${JSON.stringify(utxos, null, 2)}`)
 

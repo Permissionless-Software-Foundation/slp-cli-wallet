@@ -90,6 +90,24 @@ const mockTokenUtxo = [
   }
 ]
 
+const mockElectrumxTokenUtxos = {
+  success: true,
+  utxos: [
+    {
+      height: 597740,
+      tx_hash: '4588c219dd5842ddce3962d1dfe443b92337fa91d5314ee7792b9cd8dac32075',
+      tx_pos: 1,
+      value: 546
+    },
+    {
+      height: 601149,
+      tx_hash: 'c5ba34388b688459a1de02eeffb4e9b0f24eb45203ec90fe44f855686686ca3c',
+      tx_pos: 2,
+      value: 546
+    }
+  ]
+}
+
 const mockTokenUtxoDetails = [
   {
     txid: 'c5ba34388b688459a1de02eeffb4e9b0f24eb45203ec90fe44f855686686ca3c',
@@ -385,5 +403,6 @@ module.exports = {
   mockWallet1,
   mockWallet2,
   mockAddressData,
-  mockSlpUtxoData
+  mockSlpUtxoData,
+  mockElectrumxTokenUtxos
 }

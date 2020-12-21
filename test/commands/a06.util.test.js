@@ -47,27 +47,35 @@ describe('#util.js', () => {
   describe('#broadcastTx', () => {
     it('should throw error on invalid hex', async () => {
       try {
+        sandbox
+          .stub(appUtils.bchjs.RawTransactions, 'sendRawTransaction')
+          .rejects({ error: 'TX decode failed' })
+
         await appUtils.broadcastTx('somehex')
 
         assert.equal(true, false, 'Unexpected result')
       } catch (err) {
-        assert.include(
-          err.error,
-          'TX decode failed'
-        )
+        // console.log('err: ', err)
+        assert.include(err.error, 'TX decode failed')
       }
     })
+
     it('should broadcast raw transaction', async () => {
       try {
-        const hex = '020000000142a5b1ed30b64801d78597871cfe8355e475c45bce138fe76650cdd1fb28f4b70000000048473044022078138d100e90055f2b7deeba2fe21787e61728e0494323c675fce8e1c33bf594022078dddf8cceaf4225fd313afb107e89c09133e37da0185936dfff8fde8dea846841ffffffff017a2000000000000023210383bc181a0c8d19939dba7400cffb28666580e75531448b2060e968a753620dafac00000000'
+        sandbox
+          .stub(appUtils.bchjs.RawTransactions, 'sendRawTransaction')
+          .rejects({ error: 'Missing inputs' })
+
+        const hex =
+          '020000000142a5b1ed30b64801d78597871cfe8355e475c45bce138fe76650cdd1fb28f4b70000000048473044022078138d100e90055f2b7deeba2fe21787e61728e0494323c675fce8e1c33bf594022078dddf8cceaf4225fd313afb107e89c09133e37da0185936dfff8fde8dea846841ffffffff017a2000000000000023210383bc181a0c8d19939dba7400cffb28666580e75531448b2060e968a753620dafac00000000'
+
         await appUtils.broadcastTx(hex)
       } catch (err) {
-        assert.include(
-          err.error,
-          'Missing inputs'
-        )
+        // console.log('err: ', err)
+        assert.include(err.error, 'Missing inputs')
       }
     })
+
     it('should return txid', async () => {
       sandbox
         .stub(appUtils.bchjs.RawTransactions, 'sendRawTransaction')
@@ -127,7 +135,10 @@ describe('#util.js', () => {
         await appUtils.saveWallet(null, utilMocks.mockWallet)
         assert.equal(true, false, 'Unexpected result')
       } catch (err) {
-        assert.include(err.message, 'The "path" argument must be of type string')
+        assert.include(
+          err.message,
+          'The "path" argument must be of type string'
+        )
       }
       mock.restore()
     })
@@ -153,21 +164,18 @@ describe('#util.js', () => {
       try {
         const badWallet = Object.assign({}, utilMocks.mockWallet)
         delete badWallet.derivation
-        await appUtils.changeAddrFromMnemonic(
-          badWallet,
-          0
-        )
+        await appUtils.changeAddrFromMnemonic(badWallet, 0)
       } catch (err) {
-        assert.include(err.message, 'walletInfo must have integer derivation value')
+        assert.include(
+          err.message,
+          'walletInfo must have integer derivation value'
+        )
       }
     })
 
     it('should throw exception on negative index', async () => {
       try {
-        await appUtils.changeAddrFromMnemonic(
-          utilMocks.mockWallet,
-          null
-        )
+        await appUtils.changeAddrFromMnemonic(utilMocks.mockWallet, null)
       } catch (err) {
         assert.include(err.message, 'index must be a non-negative integer.')
       }
@@ -193,7 +201,9 @@ describe('#util.js', () => {
 
     it('should return false for a spent UTXO', async () => {
       // Unit test mocking.
-      if (process.env.TEST === 'unit') { sandbox.stub(appUtils.bchjs.Blockchain, 'getTxOut').resolves(null) }
+      if (process.env.TEST === 'unit') {
+        sandbox.stub(appUtils.bchjs.Blockchain, 'getTxOut').resolves(null)
+      }
 
       const result = await appUtils.isValidUtxo(utilMocks.mockSpentUtxo[0])
       // console.log(`result: ${JSON.stringify(result, null, 2)}`)
@@ -250,10 +260,7 @@ describe('#util.js', () => {
         delete badWallet.mnemonic
         await appUtils.generateAddress(badWallet, 0, 20)
       } catch (err) {
-        assert.include(
-          err.message,
-          'mnemonic is undefined!'
-        )
+        assert.include(err.message, 'mnemonic is undefined!')
       }
     })
   })
@@ -352,10 +359,7 @@ describe('#util.js', () => {
       const output = stdout.inspectSync(function () {
         appUtils.displayTxid('sometxid', 'mainnet')
       })
-      assert.include(
-        output[1],
-        'TXID: sometxid\n'
-      )
+      assert.include(output[1], 'TXID: sometxid\n')
       assert.include(
         output[2],
         'View on the block explorer: https://explorer.bitcoin.com/bch/tx/sometxid\n'
@@ -365,10 +369,7 @@ describe('#util.js', () => {
       const output = stdout.inspectSync(function () {
         appUtils.displayTxid('sometxid', 'testnet')
       })
-      assert.include(
-        output[1],
-        'TXID: sometxid\n'
-      )
+      assert.include(output[1], 'TXID: sometxid\n')
       assert.include(
         output[2],
         'View on the block explorer: https://explorer.bitcoin.com/tbch/tx/sometxid\n'
