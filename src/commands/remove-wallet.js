@@ -14,26 +14,27 @@ class RemoveWallet extends Command {
 
       const filename = `${__dirname}/../../wallets/${flags.name}.json`
 
-      this.removeWallet(filename)
+      return this.removeWallet(filename)
     } catch (err) {
       console.log('Error: ', err)
     }
   }
 
   async removeWallet (filename) {
-    try {
-      shelljs.rm(filename)
-    } catch (err) {
-      if (err.code !== 'EEXIT') console.log('Error in removeWallet().')
-      throw err
-    }
+    const result = shelljs.rm(filename)
+
+    if (!shelljs.error()) return result
+
+    throw new Error(result.stderr || 'Error in removeWallet().')
   }
 
   // Validate the proper flags are passed in.
   validateFlags (flags) {
     // Exit if wallet not specified.
     const name = flags.name
-    if (!name || name === '') { throw new Error('You must specify a wallet with the -n flag.') }
+    if (!name || name === '') {
+      throw new Error('You must specify a wallet with the -n flag.')
+    }
 
     return true
   }
