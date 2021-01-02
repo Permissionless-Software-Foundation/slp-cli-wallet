@@ -147,7 +147,7 @@ class SendTokens extends Command {
   ) {
     try {
       // console.log(`utxo: ${JSON.stringify(utxo, null, 2)}`)
-      console.log(`tokenUtxos: ${JSON.stringify(tokenUtxos, null, 2)}`)
+      // console.log(`tokenUtxos: ${JSON.stringify(tokenUtxos, null, 2)}`)
 
       // instance of transaction builder
       let transactionBuilder
