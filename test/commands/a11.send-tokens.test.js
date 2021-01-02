@@ -7,6 +7,7 @@
 
 const assert = require('chai').assert
 const sinon = require('sinon')
+const cloneDeep = require('lodash.clonedeep')
 
 // Library under test.
 const SendTokens = require('../../src/commands/send-tokens')
@@ -14,6 +15,7 @@ const SendTokens = require('../../src/commands/send-tokens')
 
 // Mock data
 const testwallet = require('../mocks/token-wallet.json')
+const mockDataLib = require('../mocks/send-token-mocks')
 const { bitboxMock } = require('../mocks/bitbox')
 // const utilMocks = require('../mocks/util')
 
@@ -33,11 +35,13 @@ describe('#send-tokens', () => {
   let mockedWallet
   let sendTokens
   let sandbox
+  let mockData
 
   beforeEach(() => {
     // By default, use the mocking library instead of live calls.
     bchjs = bitboxMock
-    mockedWallet = Object.assign({}, testwallet) // Clone the testwallet
+    mockedWallet = cloneDeep(testwallet) // Clone the testwallet
+    mockData = cloneDeep(mockDataLib)
 
     sandbox = sinon.createSandbox()
 
@@ -169,7 +173,20 @@ describe('#send-tokens', () => {
       const tokenUtxos = sendTokens.getTokenUtxos(tokenId, mockedWallet)
       // console.log(`tokenUtxos: ${JSON.stringify(tokenUtxos, null, 2)}`)
 
-      assert.equal(tokenUtxos.length, 1) // Should return 2 UTXOs from mock wallet.
+      assert.equal(tokenUtxos.length, 1) // Should return 1 UTXO from mock wallet.
+    })
+
+    it('should return remove minting baton from token UTXOs', () => {
+      const tokenId =
+        'd1c16867b41d77e6196e2680173b3afc9dff1968118ad1b829b3c8b9b921328d'
+
+      // Force the test wallet to have a minting baton
+      mockedWallet.SLPUtxos = mockData.mockUtxosWithMintingBaton
+
+      const tokenUtxos = sendTokens.getTokenUtxos(tokenId, mockedWallet)
+      // console.log(`tokenUtxos: ${JSON.stringify(tokenUtxos, null, 2)}`)
+
+      assert.equal(tokenUtxos.length, 1) // Should return 1 UTXO from mock wallet.
     })
   })
 
