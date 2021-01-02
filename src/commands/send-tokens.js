@@ -285,13 +285,15 @@ class SendTokens extends Command {
   // if no UTXOs for that token can be found.
   getTokenUtxos (tokenId, walletInfo) {
     try {
-      // const tokenUtxos = walletInfo.SLPUtxos.filter(x => x.tokenId === tokenId)
+      // console.log(`tokenId: ${tokenId}`)
+      // console.log(`walletInfo: ${JSON.stringify(walletInfo, null, 2)}`)
 
       // Create an array of the UTXOs in the wallet that are associated with the
       // target token.
       let tokenUtxos = walletInfo.SLPUtxos.map(elem =>
-        elem.utxos.filter(x => x.tokenId === tokenId)
+        elem.utxos.filter(x => x.tokenId === tokenId && x.utxoType !== 'minting-baton')
       )
+      // console.log(`tokenUtxos: ${JSON.stringify(tokenUtxos, null, 2)}`)
 
       // Flatten the array.
       tokenUtxos = tokenUtxos.flat()
