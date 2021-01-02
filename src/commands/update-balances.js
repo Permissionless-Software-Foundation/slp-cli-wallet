@@ -161,7 +161,7 @@ class UpdateBalances extends Command {
   // Display summary of token balances in the wallet.
   displayTokenBalances (slpUtxos) {
     try {
-      // console.log(`slpUtxos: ${JSON.stringify(slpUtxos, null, 2)}`)
+      console.log(`slpUtxos: ${JSON.stringify(slpUtxos, null, 2)}`)
 
       // Create an array of just token IDs
       let tokenIds = slpUtxos.map(x => x.utxos.map(y => y.tokenId))
@@ -196,8 +196,9 @@ class UpdateBalances extends Command {
           for (let k = 0; k < slpUtxos[j].utxos.length; k++) {
             const thisUtxo = slpUtxos[j].utxos[k]
 
-            // If the token Ids match.
-            if (thisUtxo.tokenId.toString() === thisTokenId.toString()) {
+            // If the token Ids match,
+            // and if this is not a minting baton.
+            if (thisUtxo.tokenId.toString() === thisTokenId.toString() && thisUtxo.utxoType !== 'minting-baton') {
               // Add the ticker to the array.
               tickers[i] = thisUtxo.tokenTicker
 
