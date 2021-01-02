@@ -256,7 +256,8 @@ class Sweep extends Command {
       const fromAddr = this.bchjs.ECPair.toCashAddress(ecPair)
 
       // Get the UTXOs for that address.
-      let utxos = await this.bchjs.Blockbook.utxo(fromAddr)
+      const utxoData = await this.bchjs.Electrumx.utxo(fromAddr)
+      let utxos = utxoData.utxos
       // console.log(`utxos: ${JSON.stringify(utxos, null, 2)}`)
 
       // Ensure all utxos have the satoshis property.
@@ -278,9 +279,9 @@ class Sweep extends Command {
       for (let i = 0; i < utxos.length; i++) {
         const utxo = utxos[i]
 
-        originalAmount = originalAmount + utxo.satoshis
+        originalAmount = originalAmount + utxo.value
 
-        transactionBuilder.addInput(utxo.txid, utxo.vout)
+        transactionBuilder.addInput(utxo.tx_hash, utxo.tx_pos)
       }
 
       if (originalAmount < 546) {
@@ -315,7 +316,7 @@ class Sweep extends Command {
           ecPair,
           redeemScript,
           transactionBuilder.hashTypes.SIGHASH_ALL,
-          utxo.satoshis
+          utxo.value
         )
       }
 
@@ -344,11 +345,11 @@ class Sweep extends Command {
 
       const fromAddr = this.bchjs.ECPair.toCashAddress(ecPair)
 
-      // get BCH balance for the public address.
-      const balances = await this.bchjs.Blockbook.balance(fromAddr)
+      const balances = await this.bchjs.Electrumx.balance(fromAddr)
       // console.log(`balances: ${JSON.stringify(balances, null, 2)}`)
+      const balance = balances.balance.confirmed + balances.balance.unconfirmed
 
-      return Number(balances.balance)
+      return Number(balance)
     } catch (err) {
       console.log('Error in sweep.js/getBalance()')
       throw err
@@ -369,8 +370,9 @@ class Sweep extends Command {
       const fromAddr = this.bchjs.ECPair.toCashAddress(ecPair)
 
       // get BCH balance for the public address.
-      const utxos = await this.bchjs.Blockbook.utxo(fromAddr)
-      // console.log(`utxos: ${JSON.stringify(utxos, null, 2)}`)
+      const utxoData = await this.bchjs.Electrumx.utxo(fromAddr)
+      // console.log(`utxoData: ${JSON.stringify(utxoData, null, 2)}`)
+      const utxos = utxoData.utxos
 
       const tokenUtxos = []
       const bchUtxos = []

@@ -112,8 +112,8 @@ describe('Sweep', () => {
         // Use mocked data if this is a unit test.
         if (process.env.TEST === 'unit') {
           sandbox
-            .stub(sweep.bchjs.Blockbook, 'balance')
-            .resolves(mockData.mockBalance1)
+            .stub(sweep.bchjs.Electrumx, 'balance')
+            .resolves(mockData.mockBalance2)
         }
 
         const result = await sweep.getBalance(flags)
@@ -128,7 +128,7 @@ describe('Sweep', () => {
     it('should return empty arrays if address has no UTXOs.', async () => {
       // Use mocked data if this is a unit test.
       if (process.env.TEST === 'unit') {
-        sandbox.stub(sweep.bchjs.Blockbook, 'utxo').resolves([])
+        sandbox.stub(sweep.bchjs.Electrumx, 'utxo').resolves(mockData.mockEmptyUtxos)
       }
 
       const flags = {
@@ -148,7 +148,7 @@ describe('Sweep', () => {
         // Use mocked data if this is a unit test.
         if (process.env.TEST === 'unit') {
           sandbox
-            .stub(sweep.bchjs.Blockbook, 'utxo')
+            .stub(sweep.bchjs.Electrumx, 'utxo')
             .resolves(mockData.tokenOnlyUtxos)
 
           sandbox
@@ -157,7 +157,7 @@ describe('Sweep', () => {
         }
 
         const flags = {
-          wif: 'L2J7NSjdyosmxv7uoLMgZAhKGdpvfRXrmKN9tUHMfStmjo7ZnHZu'
+          wif: 'L1Rd1wjFng6GfQ2tEMgUYhZu8nTaW6hJ4Qu2vitWW2BJk17DH72s'
         }
 
         await sweep.getTokens(flags)
@@ -172,7 +172,7 @@ describe('Sweep', () => {
         // Use mocked data if this is a unit test.
         if (process.env.TEST === 'unit') {
           sandbox
-            .stub(sweep.bchjs.Blockbook, 'utxo')
+            .stub(sweep.bchjs.Electrumx, 'utxo')
             .resolves(mockData.bchOnlyUtxos)
 
           sandbox
@@ -181,7 +181,7 @@ describe('Sweep', () => {
         }
 
         const flags = {
-          wif: 'KyC3XUbsYfvtR5dPDqSWUq2Z6sbW9fKCG3JB4bH1YVEE74nPUK9F'
+          wif: 'L1Rd1wjFng6GfQ2tEMgUYhZu8nTaW6hJ4Qu2vitWW2BJk17DH72s'
         }
 
         const result = await sweep.getTokens(flags)
@@ -196,7 +196,7 @@ describe('Sweep', () => {
         // Use mocked data if this is a unit test.
         if (process.env.TEST === 'unit') {
           sandbox
-            .stub(sweep.bchjs.Blockbook, 'utxo')
+            .stub(sweep.bchjs.Electrumx, 'utxo')
             .resolves(mockData.bothUtxos)
 
           sandbox
@@ -205,7 +205,7 @@ describe('Sweep', () => {
         }
 
         const flags = {
-          wif: 'KxQ615REGBjtbd1HVjT8of8dfzVte1xw3sURBp7ZQ8s4wXhmSWXC'
+          wif: 'L1Rd1wjFng6GfQ2tEMgUYhZu8nTaW6hJ4Qu2vitWW2BJk17DH72s'
         }
 
         const result = await sweep.getTokens(flags)
@@ -222,7 +222,7 @@ describe('Sweep', () => {
     it('should throw an error if there are no funds found', async () => {
       // Use mocked data if this is a unit test.
       if (process.env.TEST === 'unit') {
-        sandbox.stub(sweep.bchjs.Blockbook, 'utxo').resolves([])
+        sandbox.stub(sweep.bchjs.Electrumx, 'utxo').resolves(mockData.mockEmptyUtxos)
       }
 
       const flags = {
@@ -247,7 +247,7 @@ describe('Sweep', () => {
         // Use mocked data if this is a unit test.
         if (process.env.TEST === 'unit') {
           sandbox
-            .stub(sweep.bchjs.Blockbook, 'utxo')
+            .stub(sweep.bchjs.Electrumx, 'utxo')
             .resolves(mockData.bchOnlyUtxos)
         }
 

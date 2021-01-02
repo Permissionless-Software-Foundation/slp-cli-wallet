@@ -4,6 +4,7 @@
 
 'use strict'
 
+// Blockbook
 const mockBalance1 = {
   page: 1,
   totalPages: 1,
@@ -18,43 +19,68 @@ const mockBalance1 = {
   txids: ['406b9f2282fca16e1e3cb2bab02d50aacb26511b6b1becd95c81f24161b768a3']
 }
 
-const tokenOnlyUtxos = [
-  {
-    txid: '90efd19136d40dfea0ee06d901029eee688b262efd7a3e26cbd2986a60912969',
-    vout: 1,
-    value: '546',
-    confirmations: 0
+// Electrumx
+const mockBalance2 = {
+  success: true,
+  balance: {
+    confirmed: 1000,
+    unconfirmed: 0
   }
-]
+}
+
+const mockEmptyUtxos = {
+  success: true,
+  utxos: []
+}
+
+const tokenOnlyUtxos = {
+  success: true,
+  utxos: [
+    {
+      height: 0,
+      tx_hash:
+        '9aee3be4c22d98234eacd72d3b2e91206c038264e9dbaac6fe13eafbc5c956aa',
+      tx_pos: 1,
+      value: 546
+    }
+  ]
+}
 
 const tokenOnlyTokenInfo = [
   {
-    txid: '90efd19136d40dfea0ee06d901029eee688b262efd7a3e26cbd2986a60912969',
-    vout: 1,
-    value: '546',
-    confirmations: 0,
+    height: 0,
+    tx_hash: '9aee3be4c22d98234eacd72d3b2e91206c038264e9dbaac6fe13eafbc5c956aa',
+    tx_pos: 1,
+    value: 546,
     satoshis: 546,
+    txid: '9aee3be4c22d98234eacd72d3b2e91206c038264e9dbaac6fe13eafbc5c956aa',
+    vout: 1,
     utxoType: 'token',
     transactionType: 'send',
-    tokenId: 'dd84ca78db4d617221b58eabc6667af8fe2f7eadbfcc213d35be9f1b419beb8d',
-    tokenTicker: 'TAP',
-    tokenName: 'Thoughts and Prayers',
-    tokenDocumentUrl: '',
+    tokenId: '6201f3efe486c577433622817b99645e1d473cd3882378f9a0efc128ab839a82',
+    tokenTicker: 'VALENTINE',
+    tokenName: 'Valentine day token',
+    tokenDocumentUrl: 'fullstack.cash',
     tokenDocumentHash: '',
-    decimals: 0,
-    tokenQty: 1
+    decimals: 2,
+    tokenType: 1,
+    tokenQty: '1',
+    isValid: true
   }
 ]
 
-const bchOnlyUtxos = [
-  {
-    txid: '53c9ee6e5ecec2787d2edfeaf0b192b45a937d5a4b1eaa715545eeb3c5c67ede',
-    vout: 0,
-    value: '1000',
-    height: 603853,
-    confirmations: 17
-  }
-]
+const bchOnlyUtxos = {
+  success: true,
+  utxos: [
+    {
+      height: 0,
+      tx_hash:
+        '8a5dff4a67d8fc0fac531146a79ed359480fba59ba50edba372f4f97e291ca10',
+      tx_pos: 0,
+      value: 8432
+    }
+  ]
+}
 
 const bchSmallUtxos = [
   {
@@ -67,53 +93,71 @@ const bchSmallUtxos = [
   }
 ]
 
-const bchOnlyTokenInfo = [false]
-
-const bothUtxos = [
+const bchOnlyTokenInfo = [
   {
-    txid: 'b319024ef23f49ec645e7b5d92db66269553d662d0ad63fbf0db1d0a276c7974',
-    vout: 1,
-    value: '546',
-    height: 603753,
-    confirmations: 117
-  },
-  {
-    txid: '3097f6fbd8d1013799f14e1d7cb5cb179fff573266cfc820d1442b88f2211200',
+    height: 0,
+    tx_hash: '8a5dff4a67d8fc0fac531146a79ed359480fba59ba50edba372f4f97e291ca10',
+    tx_pos: 0,
+    value: 8432,
+    satoshis: 8432,
+    txid: '8a5dff4a67d8fc0fac531146a79ed359480fba59ba50edba372f4f97e291ca10',
     vout: 0,
-    value: '2000',
-    height: 603753,
-    confirmations: 117
+    isValid: false
   }
 ]
 
+// Contains both a token and non-token utxo.
+const bothUtxos = {
+  success: true,
+  utxos: [
+    {
+      height: 0,
+      tx_hash:
+        '8a5dff4a67d8fc0fac531146a79ed359480fba59ba50edba372f4f97e291ca10',
+      tx_pos: 0,
+      value: 8432
+    },
+    {
+      height: 0,
+      tx_hash:
+        'd6759c4e3499476af61012e37573bf9cb1db5258f92d8a3f190cb3e590ae9659',
+      tx_pos: 1,
+      value: 546
+    }
+  ]
+}
+
+// Contains both a token and non-token UTXO.
 const bothTokenInfo = [
   {
-    txid: 'cfef85eadec3f6c0f62e522d8e7b9e5e664f27b29442b882c8aa021fb02b5e45',
-    vout: 1,
-    value: '546',
-    height: 648506,
-    confirmations: 1,
+    height: 0,
+    tx_hash: '8a5dff4a67d8fc0fac531146a79ed359480fba59ba50edba372f4f97e291ca10',
+    tx_pos: 0,
+    value: 8432,
+    satoshis: 8432,
+    txid: '8a5dff4a67d8fc0fac531146a79ed359480fba59ba50edba372f4f97e291ca10',
+    vout: 0,
+    isValid: false
+  },
+  {
+    height: 0,
+    tx_hash: 'd6759c4e3499476af61012e37573bf9cb1db5258f92d8a3f190cb3e590ae9659',
+    tx_pos: 1,
+    value: 546,
     satoshis: 546,
+    txid: 'd6759c4e3499476af61012e37573bf9cb1db5258f92d8a3f190cb3e590ae9659',
+    vout: 1,
     utxoType: 'token',
     transactionType: 'send',
-    tokenId: 'a4fb5c2da1aa064e25018a43f9165040071d9e984ba190c222a7f59053af84b2',
-    tokenTicker: 'TROUT',
-    tokenName: "Trout's test token",
-    tokenDocumentUrl: 'troutsblog.com',
+    tokenId: '6201f3efe486c577433622817b99645e1d473cd3882378f9a0efc128ab839a82',
+    tokenTicker: 'VALENTINE',
+    tokenName: 'Valentine day token',
+    tokenDocumentUrl: 'fullstack.cash',
     tokenDocumentHash: '',
     decimals: 2,
     tokenType: 1,
-    tokenQty: 2.3,
+    tokenQty: '1',
     isValid: true
-  },
-  {
-    txid: '056aec5d36110ab2701f068e88b35cbb1dd1f8c2964aa72f5475d56231bd1aa6',
-    vout: 0,
-    value: '10000',
-    height: 648506,
-    confirmations: 1,
-    satoshis: 10000,
-    isValid: false
   }
 ]
 
@@ -166,6 +210,8 @@ const twoTokens = [
 
 module.exports = {
   mockBalance1,
+  mockBalance2,
+  mockEmptyUtxos,
   tokenOnlyUtxos,
   tokenOnlyTokenInfo,
   bchOnlyUtxos,
