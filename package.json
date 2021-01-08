@@ -11,7 +11,7 @@
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.0",
-    "@psf/bch-js": "^4.5.0",
+    "@psf/bch-js": "^4.5.3",
     "bignumber.js": "^9.0.0",
     "cli-table": "^0.3.1",
     "collect.js": "^4.16.6",

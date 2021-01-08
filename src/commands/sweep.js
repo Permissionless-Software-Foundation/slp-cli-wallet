@@ -169,7 +169,7 @@ class Sweep extends Command {
       // Tally up the quantity of tokens
       let tokenQty = 0
       for (let i = 0; i < tokenUtxos.length; i++) {
-        tokenQty += tokenUtxos[i].tokenQty
+        tokenQty += Number(tokenUtxos[i].tokenQty)
       }
       // console.log(`tokenQty: ${tokenQty}`)
 
