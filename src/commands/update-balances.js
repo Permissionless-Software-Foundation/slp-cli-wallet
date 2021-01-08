@@ -203,7 +203,7 @@ class UpdateBalances extends Command {
               tickers[i] = thisUtxo.tokenTicker
 
               // Add the token quantity to the total.
-              total += thisUtxo.tokenQty
+              total += Number(thisUtxo.tokenQty)
             }
           }
         }
