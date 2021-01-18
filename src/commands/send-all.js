@@ -138,9 +138,9 @@ class SendAll extends Command {
           const utxo = addr.utxos[j]
           // console.log(`utxo: ${JSON.stringify(utxo, null, 2)}`)
 
-          originalAmount = originalAmount + utxo.satoshis
+          originalAmount = originalAmount + utxo.value
 
-          transactionBuilder.addInput(utxo.txid, utxo.vout)
+          transactionBuilder.addInput(utxo.tx_hash, utxo.tx_pos)
 
           numUtxos++
         }
@@ -196,7 +196,7 @@ class SendAll extends Command {
             keyPair,
             redeemScript,
             transactionBuilder.hashTypes.SIGHASH_ALL,
-            utxo.satoshis
+            utxo.value
           )
 
           inputCnt++
