@@ -157,7 +157,7 @@ class SendTokens extends Command {
 
       // const satoshisToSend = Math.floor(bch * 100000000)
       // console.log(`Amount to send in satoshis: ${satoshisToSend}`)
-      const originalAmount = utxo.satoshis
+      const originalAmount = utxo.value
       const vout = utxo.tx_pos
       const txid = utxo.tx_hash
 
@@ -246,6 +246,7 @@ class SendTokens extends Command {
       // Sign each token UTXO being consumed.
       for (let i = 0; i < tokenUtxos.length; i++) {
         const thisUtxo = tokenUtxos[i]
+        // console.log(`i: ${i}`)
         // console.log(`thisUtxo: ${JSON.stringify(thisUtxo, null, 2)}`)
 
         // Generate a keypair to sign the SLP UTXO.
@@ -262,7 +263,7 @@ class SendTokens extends Command {
           slpKeyPair,
           redeemScript,
           transactionBuilder.hashTypes.SIGHASH_ALL,
-          thisUtxo.satoshis
+          thisUtxo.value
         )
       }
 
