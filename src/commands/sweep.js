@@ -106,12 +106,21 @@ class Sweep extends Command {
 
       // Ensure there is only one class of token in the wallet. Throw an error if
       // there is more than one.
-      const tokenId = tokenUtxos[0].tokenId
+      let tokenId = tokenUtxos[0].tokenId
       const otherTokens = tokenUtxos.filter(x => x.tokenId !== tokenId)
+
+      let filteredTokenUtxos = tokenUtxos
+
       if (otherTokens.length > 0) {
-        throw new Error(
-          'Multiple token classes detected. This function only supports a single class of token.'
-        )
+        if (!flags.tokenId) {
+          throw new Error(
+            'Multiple token classes detected. Use the -i flag to choose a specific token ID.'
+          )
+        } else {
+          // Sweep the tokens UTXOs with the user-provided token ID.
+          tokenId = flags.tokenId
+          filteredTokenUtxos = tokenUtxos.filter(x => x.tokenId === tokenId)
+        }
       }
 
       const wif = flags.wif
@@ -128,7 +137,7 @@ class Sweep extends Command {
       } else transactionBuilder = new this.bchjs.TransactionBuilder()
 
       // Combine all the UTXOs into a single array.
-      const allUtxos = bchUtxos.concat(tokenUtxos)
+      const allUtxos = bchUtxos.concat(filteredTokenUtxos)
       // console.log(`allUtxos: ${JSON.stringify(allUtxos, null, 2)}`)
 
       // Loop through all UTXOs.
@@ -136,7 +145,7 @@ class Sweep extends Command {
       for (let i = 0; i < allUtxos.length; i++) {
         const utxo = allUtxos[i]
 
-        originalAmount = originalAmount + utxo.satoshis
+        originalAmount = originalAmount + Number(utxo.value)
 
         transactionBuilder.addInput(utxo.txid, utxo.vout)
       }
@@ -161,15 +170,15 @@ class Sweep extends Command {
 
       // amount to send back to the sending address. It's the original amount - 1 sat/byte for tx size
       const remainder = originalAmount - txFee - 546
-      if (remainder < 1) {
+      if (remainder < 546) {
         throw new Error('Selected UTXO does not have enough satoshis')
       }
-      // console.log(`remainder: ${remainder}`)
+      console.log(`remainder: ${remainder}`)
 
       // Tally up the quantity of tokens
       let tokenQty = 0
-      for (let i = 0; i < tokenUtxos.length; i++) {
-        tokenQty += Number(tokenUtxos[i].tokenQty)
+      for (let i = 0; i < filteredTokenUtxos.length; i++) {
+        tokenQty += Number(filteredTokenUtxos[i].tokenQty)
       }
       // console.log(`tokenQty: ${tokenQty}`)
 
@@ -182,7 +191,7 @@ class Sweep extends Command {
       const {
         script,
         outputs
-      } = this.bchjs.SLP.TokenType1.generateSendOpReturn(tokenUtxos, tokenQty)
+      } = this.bchjs.SLP.TokenType1.generateSendOpReturn(filteredTokenUtxos, tokenQty)
       // console.log(`token outputs: ${outputs}`)
 
       // Since we are sweeping all tokens from the WIF, there generateOpReturn()
@@ -222,7 +231,7 @@ class Sweep extends Command {
           ecPair,
           redeemScript,
           transactionBuilder.hashTypes.SIGHASH_ALL,
-          thisUtxo.satoshis
+          Number(thisUtxo.value)
         )
       }
 
@@ -236,7 +245,7 @@ class Sweep extends Command {
 
       return hex
     } catch (err) {
-      console.error('Error in sweep.js/sweepTokens()')
+      console.error('Error in sweep.js/sweepTokens(): ', err)
       throw err
     }
   }
@@ -444,6 +453,10 @@ Sweep.flags = {
   address: flags.string({
     char: 'a',
     description: 'Address to sweep funds to.'
+  }),
+  tokenId: flags.string({
+    char: 'i',
+    description: 'The token ID to sweep when there are multiple tokens'
   })
 }
 
