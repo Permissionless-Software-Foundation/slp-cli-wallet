@@ -113,6 +113,8 @@ class Send extends Command {
     try {
       // console.log(`utxo: ${util.inspect(utxo)}`)
 
+      sendToAddr = this.bchjs.SLP.Address.toCashAddress(sendToAddr)
+
       // instance of transaction builder
       let transactionBuilder
       if (walletInfo.network === 'testnet') {

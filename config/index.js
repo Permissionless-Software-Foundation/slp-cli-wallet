@@ -33,28 +33,29 @@ if (process.env.BCHJSTOKEN) config.JWT = process.env.BCHJSTOKEN
 if (RESTAPI === 'fullstack.cash') {
   // config.BCHLIB = BCHJS.BitboxShim()
   config.BCHLIB = BCHJS
-  config.MAINNET_REST = 'https://bchn.fullstack.cash/v3/'
-  config.TESTNET_REST = 'https://testnet3.fullstack.cash/v3/'
+  config.MAINNET_REST = 'https://bchn.fullstack.cash/v4/'
+  // config.MAINNET_REST = 'https://abc.fullstack.cash/v4/'
+  config.TESTNET_REST = 'https://testnet3.fullstack.cash/v4/'
   config.RESTAPI = 'bchjs'
 }
 
 // Use bch-js with local infrastructure.
 if (RESTAPI === 'local') {
   config.BCHLIB = BCHJS
-  // config.MAINNET_REST = `http://192.168.0.36:12400/v3/`
-  // config.TESTNET_REST = `http://192.168.0.38:13400/v3/`
-  config.MAINNET_REST = 'http://127.0.0.1:3000/v3/'
-  // config.TESTNET_REST = `http://decatur.hopto.org:13400/v3/`
-  // config.TESTNET_REST = `https://testnet.bchjs.cash/v3/`
-  config.TESTNET_REST = 'http://127.0.0.1:4000/v3/'
+  // config.MAINNET_REST = `http://192.168.0.36:12400/v4/`
+  // config.TESTNET_REST = `http://192.168.0.38:13400/v4/`
+  config.MAINNET_REST = 'http://127.0.0.1:3000/v4/'
+  // config.TESTNET_REST = `http://decatur.hopto.org:13400/v4/`
+  // config.TESTNET_REST = `https://testnet.bchjs.cash/v4/`
+  config.TESTNET_REST = 'http://127.0.0.1:4000/v4/'
   config.RESTAPI = 'local'
 }
 
 // Use bch-js with decatur infrastructure.
 if (RESTAPI === 'decatur') {
   config.BCHLIB = BCHJS
-  config.MAINNET_REST = 'http://decatur.hopto.org:12400/v3/'
-  config.TESTNET_REST = 'http://decatur.hopto.org:13400/v3/'
+  config.MAINNET_REST = 'http://decatur.hopto.org:12400/v4/'
+  config.TESTNET_REST = 'http://decatur.hopto.org:13400/v4/'
   config.RESTAPI = 'decatur'
 }
 

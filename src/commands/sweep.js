@@ -157,7 +157,7 @@ class Sweep extends Command {
       // const satoshisPerByte = 1.1
       // const txFee = Math.floor(satoshisPerByte * byteCount)
       // console.log(`txFee: ${txFee} satoshis\n`)
-      const txFee = 500
+      const txFee = 600
 
       // amount to send back to the sending address. It's the original amount - 1 sat/byte for tx size
       const remainder = originalAmount - txFee - 546
