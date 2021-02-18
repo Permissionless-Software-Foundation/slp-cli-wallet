@@ -363,7 +363,7 @@ describe('Sweep', () => {
         mockData.bchUtxo,
         mockData.tokenOnlyTokenInfo
       )
-      // console.log(`result: ${JSON.stringify(result, null, 2)}`)
+      console.log(`result: ${JSON.stringify(result, null, 2)}`)
 
       assert.isString(result)
     })

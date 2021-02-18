@@ -137,6 +137,7 @@ describe('send', () => {
         ])
       })
     }
+
     it('should reject if output is less than dust', async () => {
       if (process.env.TEST === 'unit') {
         sandbox.stub(send.appUtils, 'isValidUtxo').resolves(true)

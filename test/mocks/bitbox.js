@@ -231,6 +231,13 @@ const bitboxMock = {
   Electrumx: {
     transactions: sinon.stub().returns(ElectrumXTransactionsResponse),
     balance: sinon.stub().returns(ElectrumXBalanceResponse)
+  },
+  SLP: {
+    Address: {
+      toCashAddress: sinon
+        .stub()
+        .returns('bchtest:qzsfqeqtdk6plsvglccadkqtf0trf2nyz58090e6tt')
+    }
   }
 }
 
