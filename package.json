@@ -1,7 +1,7 @@
 {
   "name": "slp-cli-wallet",
   "description": "A hacker-friendly, command line BCH and SLP wallet built with bch-js",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "author": "Chris Troutner @christroutner",
   "bin": {
     "slp-cli-wallet": "./bin/run"
