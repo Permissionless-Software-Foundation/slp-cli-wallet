@@ -1,6 +1,4 @@
-*Warning: This is an experimental 'hacker-friendly' wallet. It has been tested only
-for the most common use-cases. It has been known to burn SLP tokens. Do not use this
-wallet for tokens with value.*
+*Warning: This is an experimental 'hacker-friendly' wallet. It's intended for use by software developers. It has been tested only for the most common use-cases. It has been known to burn SLP tokens. Do not use this wallet for tokens with value.*
 
 # slp-cli-wallet
 
