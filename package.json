@@ -6,7 +6,7 @@
   "bin": {
     "slp-cli-wallet": "./bin/run"
   },
-  "bugs": "https://github.com/christroutner/slp-cli-wallet/issues",
+  "bugs": "https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/issues",
   "dependencies": {
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
@@ -52,7 +52,7 @@
     "/wallets",
     "/config"
   ],
-  "homepage": "https://github.com/christroutner/slp-cli-wallet",
+  "homepage": "https://github.com/Permissionless-Software-Foundation/slp-cli-wallet",
   "keywords": [
     "oclif"
   ],
@@ -65,7 +65,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "christroutner/slp-cli-wallet",
+  "repository": "Permissionless-Software-Foundation/slp-cli-wallet",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "oclif-dev manifest && oclif-dev readme",
