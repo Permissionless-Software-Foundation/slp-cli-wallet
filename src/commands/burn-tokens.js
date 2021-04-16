@@ -185,16 +185,16 @@ class BurnTokens extends Command {
 
       // const satoshisToSend = Math.floor(bch * 100000000)
       // console.log(`Amount to send in satoshis: ${satoshisToSend}`)
-      const originalAmount = utxo.satoshis
-      const vout = utxo.vout
-      const txid = utxo.txid
+      const originalAmount = utxo.value
+      const vout = utxo.tx_pos
+      const txid = utxo.tx_hash
 
       // add input utxo to pay for transaction.
       transactionBuilder.addInput(txid, vout)
 
       // add each token UTXO as an input.
       for (let i = 0; i < tokenUtxos.length; i++) {
-        transactionBuilder.addInput(tokenUtxos[i].txid, tokenUtxos[i].vout)
+        transactionBuilder.addInput(tokenUtxos[i].tx_hash, tokenUtxos[i].tx_pos)
       }
 
       // get byte count to calculate fee. paying 1 sat
@@ -274,7 +274,7 @@ class BurnTokens extends Command {
           slpKeyPair,
           redeemScript,
           transactionBuilder.hashTypes.SIGHASH_ALL,
-          thisUtxo.satoshis
+          thisUtxo.value
         )
       }
 
