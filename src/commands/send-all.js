@@ -63,7 +63,9 @@ class SendAll extends Command {
       const sendToAddr = flags.sendAddr // The address to send to.
 
       // Open the wallet data file.
-      const filename = `${__dirname}/../../wallets/${flags.name}.json`
+      const filename = `${__dirname.toString()}/../../wallets/${
+        flags.name
+      }.json`
       let walletInfo = appUtils.openWallet(filename)
       walletInfo.name = name
 
@@ -76,7 +78,9 @@ class SendAll extends Command {
       // console.log(`walletInfo: ${JSON.stringify(walletInfo, null, 2)}`)
 
       // Update balances before sending.
-      const updateBalances = new UpdateBalances(undefined, { bchjs: this.bchjs })
+      const updateBalances = new UpdateBalances(undefined, {
+        bchjs: this.bchjs
+      })
       walletInfo = await updateBalances.updateBalances(flags)
 
       // Get all UTXOs controlled by this wallet.

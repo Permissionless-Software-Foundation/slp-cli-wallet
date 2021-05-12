@@ -14,7 +14,7 @@ const config = require('../../config')
 const { bitboxMock } = require('../mocks/bitbox')
 const fs = require('fs')
 
-const filename = `${__dirname}/../../wallets/test123.json`
+const filename = `${__dirname.toString()}/../../wallets/test123.json`
 
 // Inspect utility used for debugging.
 const util = require('util')
@@ -120,11 +120,7 @@ describe('get-key', () => {
   })
 
   it('should return on proper flags passed', () => {
-    assert.equal(
-      getKey.validateFlags({ name: 'test' }),
-      true,
-      'return true'
-    )
+    assert.equal(getKey.validateFlags({ name: 'test' }), true, 'return true')
   })
 
   it('should throw error if wallet file not found.', async () => {
@@ -136,7 +132,9 @@ describe('get-key', () => {
   })
 
   it('create keys pair for mainnet', async () => {
-    if (process.env.TEST !== 'unit') { getKey.BITBOX = new config.BCHLIB({ restURL: config.MAINNET_REST }) }
+    if (process.env.TEST !== 'unit') {
+      getKey.BITBOX = new config.BCHLIB({ restURL: config.MAINNET_REST })
+    }
     // Create a mainnet wallet
     const newWallet = new CreateWallet()
     await newWallet.createWallet(filename, false)
@@ -147,7 +145,9 @@ describe('get-key', () => {
 
   it('increments the nextAddress property of the wallet.', async () => {
     // Use the real library if this is not a unit test
-    if (process.env.TEST !== 'unit') { getKey.BITBOX = new config.BCHLIB({ restURL: config.TESTNET_REST }) }
+    if (process.env.TEST !== 'unit') {
+      getKey.BITBOX = new config.BCHLIB({ restURL: config.TESTNET_REST })
+    }
 
     // Create a testnet wallet
     const createWallet = new CreateWallet()

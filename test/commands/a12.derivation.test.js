@@ -92,7 +92,7 @@ describe('#derivation', () => {
     })
 
     it('should save the new derivation path to the wallet file', () => {
-      const filename = `${__dirname}/../../wallets/test123.json`
+      const filename = `${__dirname.toString()}/../../wallets/test123.json`
 
       const flags = {
         name: 'test123',

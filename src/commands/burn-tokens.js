@@ -91,7 +91,7 @@ class BurnTokens extends Command {
       const tokenId = flags.tokenId // SLP token ID.
 
       // Open the wallet data file.
-      const filename = `${__dirname}/../../wallets/${name}.json`
+      const filename = `${__dirname.toString()}/../../wallets/${name}.json`
       let walletInfo = this.appUtils.openWallet(filename)
       walletInfo.name = name
 

@@ -13,7 +13,7 @@ const config = require('../../config')
 
 const { bitboxMock } = require('../mocks/bitbox')
 
-const filename = `${__dirname}/../../wallets/test123.json`
+const filename = `${__dirname.toString()}/../../wallets/test123.json`
 
 const fs = require('fs')
 

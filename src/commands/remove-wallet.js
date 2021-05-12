@@ -12,7 +12,9 @@ class RemoveWallet extends Command {
       // Validate input flags
       this.validateFlags(flags)
 
-      const filename = `${__dirname}/../../wallets/${flags.name}.json`
+      const filename = `${__dirname.toString()}/../../wallets/${
+        flags.name
+      }.json`
 
       return this.removeWallet(filename)
     } catch (err) {

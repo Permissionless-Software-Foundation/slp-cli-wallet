@@ -21,7 +21,9 @@ class Derivation extends Command {
       // Ensure flags meet qualifiying critieria.
       this.validateFlags(flags)
 
-      const filename = `${__dirname}/../../wallets/${flags.name}.json`
+      const filename = `${__dirname.toString()}/../../wallets/${
+        flags.name
+      }.json`
       const walletData = appUtils.openWallet(filename)
       console.log(`Current derivation path: ${walletData.derivation}`)
 

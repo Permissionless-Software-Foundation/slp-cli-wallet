@@ -95,7 +95,7 @@ class UpdateBalances extends Command {
     const name = flags.name
 
     // Open the wallet data file.
-    const filename = `${__dirname}/../../wallets/${name}.json`
+    const filename = `${__dirname.toString()}/../../wallets/${name}.json`
     const walletInfo = this.appUtils.openWallet(filename)
     walletInfo.name = name
 
@@ -198,7 +198,10 @@ class UpdateBalances extends Command {
 
             // If the token Ids match,
             // and if this is not a minting baton.
-            if (thisUtxo.tokenId.toString() === thisTokenId.toString() && thisUtxo.utxoType !== 'minting-baton') {
+            if (
+              thisUtxo.tokenId.toString() === thisTokenId.toString() &&
+              thisUtxo.utxoType !== 'minting-baton'
+            ) {
               // Add the ticker to the array.
               tickers[i] = thisUtxo.tokenTicker
 

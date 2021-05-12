@@ -42,7 +42,9 @@ class SignMessage extends Command {
       }
 
       // Generate an absolute filename from the name.
-      const filename = `${__dirname}/../../wallets/${flags.name}.json`
+      const filename = `${__dirname.toString()}/../../wallets/${
+        flags.name
+      }.json`
 
       const signM = await this.sign(
         filename,
@@ -62,7 +64,7 @@ class SignMessage extends Command {
 
   async sign (filename, sendAddrIndex, message) {
     try {
-      // const filename = `${__dirname}/../../wallets/${name}.json`
+      // const filename = `${__dirname.toString()}/../../wallets/${name}.json`
       const walletInfo = appUtils.openWallet(filename)
       // console.log(`walletInfo: ${JSON.stringify(walletInfo, null, 2)}`)
 
@@ -81,10 +83,7 @@ class SignMessage extends Command {
         `m/44'/${walletInfo.derivation}'/0'`
       )
       // derive an external change address HDNode
-      const change = this.bchjs.HDNode.derivePath(
-        account,
-        `0/${sendAddrIndex}`
-      )
+      const change = this.bchjs.HDNode.derivePath(account, `0/${sendAddrIndex}`)
 
       // get the cash address
       // const pubKeyAddr = this.bchjs.HDNode.toCashAddress(change)
@@ -132,7 +131,10 @@ SignMessage.description = 'Sign message'
 SignMessage.flags = {
   name: flags.string({ char: 'n', description: 'Name of wallet' }),
   sendAddrIndex: flags.string({ char: 'i', description: 'Address index' }),
-  message: flags.string({ char: 'm', description: 'Message to sign. (Wrap in quotes)' })
+  message: flags.string({
+    char: 'm',
+    description: 'Message to sign. (Wrap in quotes)'
+  })
 }
 
 module.exports = SignMessage
