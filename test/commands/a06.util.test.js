@@ -125,7 +125,7 @@ describe('#util.js', () => {
 
   describe('#saveWallet', () => {
     it('should save a wallet without error', async () => {
-      const filename = `${__dirname}/../../wallets/test123.json`
+      const filename = `${__dirname.toString()}/../../wallets/test123.json`
 
       await appUtils.saveWallet(filename, utilMocks.mockWallet)
     })

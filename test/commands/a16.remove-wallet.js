@@ -15,7 +15,7 @@ const { bitboxMock } = require('../mocks/bitbox')
 const fs = require('fs')
 // const mock = require('mock-fs')
 
-const filename = `${__dirname}/../../wallets/test123.json`
+const filename = `${__dirname.toString()}/../../wallets/test123.json`
 
 // Inspect utility used for debugging.
 const util = require('util')

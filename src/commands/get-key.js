@@ -51,7 +51,9 @@ class GetKey extends Command {
       }
 
       // Generate an absolute filename from the name.
-      const filename = `${__dirname}/../../wallets/${flags.name}.json`
+      const filename = `${__dirname.toString()}/../../wallets/${
+        flags.name
+      }.json`
 
       const newPair = await this.getPair(filename)
       const newAddress = newPair.pub
@@ -87,7 +89,7 @@ class GetKey extends Command {
   // Get a private/public key pair. Private key in WIF format.
   async getPair (filename) {
     try {
-      // const filename = `${__dirname}/../../wallets/${name}.json`
+      // const filename = `${__dirname.toString()}/../../wallets/${name}.json`
       const walletInfo = appUtils.openWallet(filename)
       // console.log(`walletInfo: ${JSON.stringify(walletInfo, null, 2)}`)
 

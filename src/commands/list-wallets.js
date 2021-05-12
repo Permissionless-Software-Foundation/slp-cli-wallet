@@ -17,7 +17,7 @@ class ListWallets extends Command {
 
   // Parse data from the wallets directory into a formatted array.
   parseWallets () {
-    const fileList = shelljs.ls(`${__dirname}/../../wallets/*.json`)
+    const fileList = shelljs.ls(`${__dirname.toString()}/../../wallets/*.json`)
 
     if (fileList.length === 0) {
       console.log('No wallets found.')
