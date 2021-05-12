@@ -1,4 +1,4 @@
-*Warning: This is an experimental 'hacker-friendly' wallet. It's intended for use by software developers. It has been tested only for the most common use-cases. It has been known to burn SLP tokens. Do not use this wallet for tokens with value.*
+_Warning: This is an experimental 'hacker-friendly' wallet. It's intended for use by software developers. It has been tested only for the most common use-cases. It has been known to burn SLP tokens. Do not use this wallet for tokens with value._
 
 # slp-cli-wallet
 
@@ -7,6 +7,7 @@ line. Add this library to your app to instantly give it the ability to transact
 on the BCH network! New to Bitcoin Cash? Find educational resources on the [FullStack.cash Documenation page](https://fullstack.cash/documentation).
 
 This project has the following goals:
+
 - Create a code base for a wallet that is easily forkable and extensible by JavaScript developers.
 - Provide a high-level abstraction to make it easy for new developers to add BCH and SLP wallet functionality into their apps.
 
@@ -16,15 +17,16 @@ Also, be sure to check out the design decisions and trade-offs that went into th
 creation of this project in the [docs directory](./docs)
 
 <!-- toc -->
-* [slp-cli-wallet](#slp-cli-wallet)
-* [NPM Usage](#npm-usage)
-* [Install Dev Environment](#install-dev-environment)
-* [Command Line Usage](#command-line-usage)
-* [Commands](#commands)
+
+- [slp-cli-wallet](#slp-cli-wallet)
+- [NPM Usage](#npm-usage)
+- [Install Dev Environment](#install-dev-environment)
+- [Command Line Usage](#command-line-usage)
+- [Commands](#commands)
 <!-- tocstop -->
 
-
 # NPM Usage
+
 The [npm library](https://www.npmjs.com/package/slp-cli-wallet) can be included
 in your own app to instantly give it the ability to send and receive BCH transactions, including SLP tokens.
 Here is an example of how to include it in your own app. This example will generate
@@ -40,12 +42,20 @@ const walletFile = './wallet.json'
 async function makeNewWallet() {
   const wallet = await createWallet.createWallet(walletFile)
 
-  console.log(`wallet: ${JSON.stringify(wallet,null,2)}`)
+  console.log(`wallet: ${JSON.stringify(wallet, null, 2)}`)
 }
 makeNewWallet()
 ```
 
+## Node and NPM Versions
+
+This app is tested on the following versions for npm and node.js:
+
+- npm: v7.12.1
+- node.js: v14.16.1
+
 # Install Dev Environment
+
 While this npm library can be used globally, the intended audience is developers
 familiar with the usage of `npm` and `git`. Here is how to set up your own
 developer environment:
@@ -58,7 +68,9 @@ Running the wallet this way, you can edit the behavior of the wallet
 by making changes to the code in the [src/commands](src/commands) directory.
 
 # Command Line Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g slp-cli-wallet
 $ slp-cli-wallet COMMAND
@@ -70,25 +82,29 @@ USAGE
   $ slp-cli-wallet COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
-* [`slp-cli-wallet burn-tokens`](#slp-cli-wallet-burn-tokens)
-* [`slp-cli-wallet create-wallet`](#slp-cli-wallet-create-wallet)
-* [`slp-cli-wallet derivation`](#slp-cli-wallet-derivation)
-* [`slp-cli-wallet get-address`](#slp-cli-wallet-get-address)
-* [`slp-cli-wallet get-key`](#slp-cli-wallet-get-key)
-* [`slp-cli-wallet hello`](#slp-cli-wallet-hello)
-* [`slp-cli-wallet help [COMMAND]`](#slp-cli-wallet-help-command)
-* [`slp-cli-wallet list-wallets`](#slp-cli-wallet-list-wallets)
-* [`slp-cli-wallet remove-wallet`](#slp-cli-wallet-remove-wallet)
-* [`slp-cli-wallet scan-funds`](#slp-cli-wallet-scan-funds)
-* [`slp-cli-wallet send`](#slp-cli-wallet-send)
-* [`slp-cli-wallet send-all`](#slp-cli-wallet-send-all)
-* [`slp-cli-wallet send-tokens`](#slp-cli-wallet-send-tokens)
-* [`slp-cli-wallet sign-message`](#slp-cli-wallet-sign-message)
-* [`slp-cli-wallet sweep`](#slp-cli-wallet-sweep)
-* [`slp-cli-wallet update-balances`](#slp-cli-wallet-update-balances)
+
+- [`slp-cli-wallet burn-tokens`](#slp-cli-wallet-burn-tokens)
+- [`slp-cli-wallet create-wallet`](#slp-cli-wallet-create-wallet)
+- [`slp-cli-wallet derivation`](#slp-cli-wallet-derivation)
+- [`slp-cli-wallet get-address`](#slp-cli-wallet-get-address)
+- [`slp-cli-wallet get-key`](#slp-cli-wallet-get-key)
+- [`slp-cli-wallet hello`](#slp-cli-wallet-hello)
+- [`slp-cli-wallet help [COMMAND]`](#slp-cli-wallet-help-command)
+- [`slp-cli-wallet list-wallets`](#slp-cli-wallet-list-wallets)
+- [`slp-cli-wallet remove-wallet`](#slp-cli-wallet-remove-wallet)
+- [`slp-cli-wallet scan-funds`](#slp-cli-wallet-scan-funds)
+- [`slp-cli-wallet send`](#slp-cli-wallet-send)
+- [`slp-cli-wallet send-all`](#slp-cli-wallet-send-all)
+- [`slp-cli-wallet send-tokens`](#slp-cli-wallet-send-tokens)
+- [`slp-cli-wallet sign-message`](#slp-cli-wallet-sign-message)
+- [`slp-cli-wallet sweep`](#slp-cli-wallet-sweep)
+- [`slp-cli-wallet update-balances`](#slp-cli-wallet-update-balances)
 
 ## `slp-cli-wallet burn-tokens`
 
@@ -373,4 +389,5 @@ OPTIONS
 ```
 
 _See code: [src/commands/update-balances.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/update-balances.js)_
+
 <!-- commandsstop -->
