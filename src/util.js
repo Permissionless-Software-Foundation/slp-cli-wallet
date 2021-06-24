@@ -60,6 +60,24 @@ class AppUtils {
     })
   }
 
+  // convert walletInfo to format suitable for NFT calls
+  async nftInfo (walletInfo, indexStr) {
+    const index = parseInt(indexStr, 10)
+    const addrData = walletInfo.addresses.filter(x => x[0] === index)
+    const rootSeed = await this.bchjs.Mnemonic.toSeed(walletInfo.mnemonic)
+    const masterHDNode = this.bchjs.HDNode.fromSeed(rootSeed)
+    const childNode = masterHDNode.derivePath(`m/44'/245'/0'/0/${index}`)
+
+    const walletObj = {
+      mnemonic: walletInfo.mnemonic,
+      cashAddress: addrData[0][1],
+      slpAddress: this.bchjs.SLP.Address.toSLPAddress(addrData[0][1]),
+      legacyAddress: this.bchjs.HDNode.toLegacyAddress(childNode),
+      WIF: this.bchjs.HDNode.toWIF(childNode)
+    }
+    return walletObj
+  }
+
   // Generate a change address from a Mnemonic of a private key.
   async changeAddrFromMnemonic (walletInfo, index) {
     try {
@@ -281,6 +299,17 @@ class AppUtils {
     // } catch (err) {
     //   throw err
     // }
+  }
+
+  // check for valid BCH/SLP address
+  async validAddress (address) {
+    try {
+      const legacyAddress = this.bchjs.SLP.Address.toLegacyAddress(address)
+      const check = await this.bchjs.Util.validateAddress(legacyAddress)
+      return check.isvalid
+    } catch (error) {
+      return false
+    }
   }
 }
 
