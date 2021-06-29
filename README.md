@@ -74,7 +74,7 @@ $ npm install -g slp-cli-wallet
 $ slp-cli-wallet COMMAND
 running command...
 $ slp-cli-wallet (-v|--version|version)
-slp-cli-wallet/3.0.0 darwin-x64 node-v12.16.1
+slp-cli-wallet/3.0.0 linux-x64 node-v14.17.0
 $ slp-cli-wallet --help [COMMAND]
 USAGE
   $ slp-cli-wallet COMMAND
@@ -330,18 +330,20 @@ _See code: [src/commands/nft-list-tokens.js](https://github.com/Permissionless-S
 
 ## `slp-cli-wallet nft-remove-child`
 
-Describe the command here
+Remove NFT child token
 
 ```
 USAGE
   $ slp-cli-wallet nft-remove-child
 
 OPTIONS
-  -n, --name=name  name to print
+  -i, --index=index      Address index in the wallet
+  -n, --name=name        Name of wallet
+  -t, --tokenId=tokenId  NFT child tokenId
 
 DESCRIPTION
   ...
-  Extra documentation goes here
+  Will remove NFT child token (type = 65) with specified tokenId
 ```
 
 _See code: [src/commands/nft-remove-child.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-remove-child.js)_
