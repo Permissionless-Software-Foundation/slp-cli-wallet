@@ -74,7 +74,7 @@ $ npm install -g slp-cli-wallet
 $ slp-cli-wallet COMMAND
 running command...
 $ slp-cli-wallet (-v|--version|version)
-slp-cli-wallet/3.0.0 linux-x64 node-v14.17.0
+slp-cli-wallet/3.0.0 darwin-x64 node-v12.16.1
 $ slp-cli-wallet --help [COMMAND]
 USAGE
   $ slp-cli-wallet COMMAND
@@ -90,13 +90,12 @@ USAGE
 * [`slp-cli-wallet derivation`](#slp-cli-wallet-derivation)
 * [`slp-cli-wallet get-address`](#slp-cli-wallet-get-address)
 * [`slp-cli-wallet get-key`](#slp-cli-wallet-get-key)
-* [`slp-cli-wallet hello`](#slp-cli-wallet-hello)
 * [`slp-cli-wallet help [COMMAND]`](#slp-cli-wallet-help-command)
 * [`slp-cli-wallet list-wallets`](#slp-cli-wallet-list-wallets)
-* [`slp-cli-wallet nft-create-child`](#slp-cli-wallet-nft-create-child)
-* [`slp-cli-wallet nft-create-group`](#slp-cli-wallet-nft-create-group)
 * [`slp-cli-wallet nft-list-addr`](#slp-cli-wallet-nft-list-addr)
 * [`slp-cli-wallet nft-list-tokens`](#slp-cli-wallet-nft-list-tokens)
+* [`slp-cli-wallet nft-create-child`](#slp-cli-wallet-nft-create-child)
+* [`slp-cli-wallet nft-create-group`](#slp-cli-wallet-nft-create-group)
 * [`slp-cli-wallet nft-remove-child`](#slp-cli-wallet-nft-remove-child)
 * [`slp-cli-wallet remove-wallet`](#slp-cli-wallet-remove-wallet)
 * [`slp-cli-wallet scan-funds`](#slp-cli-wallet-scan-funds)
@@ -195,23 +194,6 @@ OPTIONS
 
 _See code: [src/commands/get-key.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/get-key.js)_
 
-## `slp-cli-wallet hello`
-
-Example command from oclif
-
-```
-USAGE
-  $ slp-cli-wallet hello
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Leaving it here for future reference in development.
-```
-
-_See code: [src/commands/hello.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/hello.js)_
 
 ## `slp-cli-wallet help [COMMAND]`
 
@@ -240,55 +222,6 @@ USAGE
 ```
 
 _See code: [src/commands/list-wallets.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/list-wallets.js)_
-
-## `slp-cli-wallet nft-create-child`
-
-Create NFT child
-
-```
-USAGE
-  $ slp-cli-wallet nft-create-child
-
-OPTIONS
-  -c, --child=child        Name of the child
-  -g, --groupId=groupId    NFT Group ID
-  -h, --hash=hash          Document hash of the group
-  -i, --index=index        Address index in the wallet
-  -n, --name=name          Name of wallet
-  -r, --receiver=receiver  Address to send the token
-  -t, --ticker=ticker      Ticker of the child
-  -u, --url=url            Document URL of the group
-
-DESCRIPTION
-  ...
-  Will create NFT child token in a specified NFT group (groupId parameter)
-```
-
-_See code: [src/commands/nft-create-child.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-create-child.js)_
-
-## `slp-cli-wallet nft-create-group`
-
-Create NFT Group
-
-```
-USAGE
-  $ slp-cli-wallet nft-create-group
-
-OPTIONS
-  -a, --amount=amount
-  -g, --group=group    Name of the group
-  -h, --hash=hash      Document hash of the group
-  -i, --index=index    Address index in the wallet
-  -n, --name=name      Name of wallet
-  -t, --ticker=ticker  Ticker of the group
-  -u, --url=url        Document URL of the group
-
-DESCRIPTION
-  ...
-  Will create NFT group with specified name, ticker and amount
-```
-
-_See code: [src/commands/nft-create-group.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-create-group.js)_
 
 ## `slp-cli-wallet nft-list-addr`
 
@@ -328,6 +261,57 @@ DESCRIPTION
 
 _See code: [src/commands/nft-list-tokens.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-list-tokens.js)_
 
+## `slp-cli-wallet nft-create-child`
+
+Create NFT child
+
+```
+USAGE
+  $ slp-cli-wallet nft-create-child
+
+OPTIONS
+  -c, --child=child        Name of the child
+  -f, --funder=funder      Fee funder address index in the wallet
+  -g, --groupId=groupId    NFT Group ID
+  -h, --hash=hash          Document hash of the group
+  -i, --index=index        Address index in the wallet
+  -n, --name=name          Name of wallet
+  -r, --receiver=receiver  Address to send the token
+  -t, --ticker=ticker      Ticker of the child
+  -u, --url=url            Document URL of the group
+
+DESCRIPTION
+  ...
+  Will create NFT child token in a specified NFT group (groupId parameter)
+```
+
+_See code: [src/commands/nft-create-child.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-create-child.js)_
+
+## `slp-cli-wallet nft-create-group`
+
+Create NFT Group
+
+```
+USAGE
+  $ slp-cli-wallet nft-create-group
+
+OPTIONS
+  -a, --amount=amount
+  -f, --funder=funder  Fee funder address index in the wallet
+  -g, --group=group    Name of the group
+  -h, --hash=hash      Document hash of the group
+  -i, --index=index    Address index in the wallet
+  -n, --name=name      Name of wallet
+  -t, --ticker=ticker  Ticker of the group
+  -u, --url=url        Document URL of the group
+
+DESCRIPTION
+  ...
+  Will create NFT group with specified name, ticker and amount
+```
+
+_See code: [src/commands/nft-create-group.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-create-group.js)_
+
 ## `slp-cli-wallet nft-remove-child`
 
 Remove NFT child token
@@ -337,6 +321,7 @@ USAGE
   $ slp-cli-wallet nft-remove-child
 
 OPTIONS
+  -f, --funder=funder    Fee funder address index in the wallet
   -i, --index=index      Address index in the wallet
   -n, --name=name        Name of wallet
   -t, --tokenId=tokenId  NFT child tokenId
