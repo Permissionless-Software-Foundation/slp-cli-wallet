@@ -33,6 +33,12 @@ class NftListAddr extends Command {
     this.appUtils = appUtils
   }
 
+  hasBalance (info, address) {
+    const bchAddress = this.bchjs.SLP.Address.toCashAddress(address)
+    const has = info.filter(i => i.cashAddress === bchAddress)[0]
+    return has ? has.balance : 0.0
+  }
+
   async run () {
     try {
       const { flags } = this.parse(NftListAddr)
@@ -63,6 +69,10 @@ class NftListAddr extends Command {
         tokens: {
           name: 'Have SLP tokens?',
           get: row => walletInfo.SLPUtxos.filter(utxo => utxo.address === row[1])[0] ? 'yes' : 'no'
+        },
+        bch: {
+          name: 'BCH Balance',
+          get: row => this.hasBalance(walletInfo.hasBalance, row[1])
         }
       }
       cli.table(walletInfo.addresses, columns, {})

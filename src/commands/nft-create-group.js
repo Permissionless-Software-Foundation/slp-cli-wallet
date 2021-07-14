@@ -41,6 +41,7 @@ class NftCreateGroup extends Command {
 
       const name = flags.name
       const index = flags.index
+      const feeIndex = flags.funder
 
       const groupConfig = {
         name: flags.group || 'NFT CLI Wallet Group',
@@ -58,8 +59,16 @@ class NftCreateGroup extends Command {
         throw new Error(`You must specify an index between 0 and ${walletInfo.nextAddress - 1}.`)
       }
 
+      if (feeIndex && (feeIndex < 0 || feeIndex > walletInfo.nextAddress)) {
+        throw new Error(`You must specify a funder index between 0 and ${walletInfo.nextAddress - 1}.`)
+      }
+
       cli.action.start(`Create NFT group '${groupConfig.ticker}'`)
       const nftInfo = await appUtils.nftInfo(walletInfo, index)
+      if (feeIndex) {
+        const feeInfo = await appUtils.nftInfo(walletInfo, feeIndex)
+        groupConfig.funder = { address: feeInfo.cashAddress, wif: feeInfo.WIF }
+      }
       const groupTxId = await nftjs.NFT.createNftGroup(nftInfo, groupConfig)
       cli.action.stop()
 
@@ -96,6 +105,7 @@ Will create NFT group with specified name, ticker and amount
 NftCreateGroup.flags = {
   name: flags.string({ char: 'n', description: 'Name of wallet' }),
   index: flags.string({ char: 'i', description: 'Address index in the wallet' }),
+  funder: flags.string({ char: 'f', description: 'Fee funder address index in the wallet' }),
   group: flags.string({ char: 'g', description: 'Name of the group' }),
   ticker: flags.string({ char: 't', description: 'Ticker of the group' }),
   amount: flags.string({ char: 'a', decription: 'Amount of tokens in the group' }),

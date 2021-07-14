@@ -41,6 +41,7 @@ class NftCreateChild extends Command {
 
       const name = flags.name
       const index = flags.index
+      const feeIndex = flags.funder
 
       const childConfig = {
         group: flags.groupId,
@@ -58,6 +59,10 @@ class NftCreateChild extends Command {
         throw new Error(`You must specify an index between 0 and ${walletInfo.nextAddress - 1}.`)
       }
 
+      if (feeIndex && (feeIndex < 0 || feeIndex > walletInfo.nextAddress)) {
+        throw new Error(`You must specify a funder index between 0 and ${walletInfo.nextAddress - 1}.`)
+      }
+
       if (flags.receiver) {
         const valid = await appUtils.validAddress(flags.receiver)
         if (!valid) {
@@ -68,6 +73,10 @@ class NftCreateChild extends Command {
 
       cli.action.start(`Create NFT child '${childConfig.ticker}'`)
       const nftInfo = await appUtils.nftInfo(walletInfo, index)
+      if (feeIndex) {
+        const feeInfo = await appUtils.nftInfo(walletInfo, feeIndex)
+        childConfig.funder = { address: feeInfo.cashAddress, wif: feeInfo.WIF }
+      }
       const childTxId = await nftjs.NFT.createNftChild(nftInfo, childConfig)
       cli.action.stop()
 
@@ -117,6 +126,7 @@ Will create NFT child token in a specified NFT group (groupId parameter)
 NftCreateChild.flags = {
   name: flags.string({ char: 'n', description: 'Name of wallet' }),
   index: flags.string({ char: 'i', description: 'Address index in the wallet' }),
+  funder: flags.string({ char: 'f', description: 'Fee funder address index in the wallet' }),
   groupId: flags.string({ char: 'g', description: 'NFT Group ID' }),
   child: flags.string({ char: 'c', description: 'Name of the child' }),
   ticker: flags.string({ char: 't', description: 'Ticker of the child' }),
