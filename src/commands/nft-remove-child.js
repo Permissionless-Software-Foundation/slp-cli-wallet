@@ -41,7 +41,11 @@ class NftRemoveChild extends Command {
 
       const name = flags.name
       const index = flags.index
-      const tokenId = flags.tokenId
+      const feeIndex = flags.funder
+
+      const removeConfig = {
+        remove: flags.tokenId
+      }
 
       // Open the wallet data file.
       const filename = `${__dirname.toString()}/../../wallets/${name}.json`
@@ -51,9 +55,17 @@ class NftRemoveChild extends Command {
         throw new Error(`You must specify an index between 0 and ${walletInfo.nextAddress - 1}.`)
       }
 
-      cli.action.start(`Remove NFT child '${tokenId}'`)
+      if (feeIndex && (feeIndex < 0 || feeIndex > walletInfo.nextAddress)) {
+        throw new Error(`You must specify a funder index between 0 and ${walletInfo.nextAddress - 1}.`)
+      }
+
+      cli.action.start(`Remove NFT child '${flags.tokenId}'`)
       const nftInfo = await appUtils.nftInfo(walletInfo, index)
-      const burnTxId = await nftjs.NFT.removeNftChild(nftInfo, tokenId)
+      if (feeIndex) {
+        const feeInfo = await appUtils.nftInfo(walletInfo, feeIndex)
+        removeConfig.funder = { address: feeInfo.cashAddress, wif: feeInfo.WIF }
+      }
+      const burnTxId = await nftjs.NFT.removeNftChild(nftInfo, removeConfig)
       cli.action.stop()
 
       console.log(`TxId: ${burnTxId}`)
@@ -102,6 +114,7 @@ Will remove NFT child token (type = 65) with specified tokenId
 NftRemoveChild.flags = {
   name: flags.string({ char: 'n', description: 'Name of wallet' }),
   index: flags.string({ char: 'i', description: 'Address index in the wallet' }),
+  funder: flags.string({ char: 'f', description: 'Fee funder address index in the wallet' }),
   tokenId: flags.string({ char: 't', description: 'NFT child tokenId' })
 }
 
