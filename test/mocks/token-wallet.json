@@ -62,7 +62,8 @@
           "decimals": 2,
           "tokenType": 1,
           "tokenQty": 7,
-          "isValid": true
+          "isValid": true,
+          "hdIndex": 2
         }
       ]
     },
@@ -104,7 +105,8 @@
           "satoshis": 600,
           "txid": "55107cde5b1d9fdc5c82e796c896fec5ecb72c27e3fd30b19b4c944a7d637151",
           "vout": 0,
-          "isValid": false
+          "isValid": false,
+          "hdIndex": 1
         }
       ]
     },
