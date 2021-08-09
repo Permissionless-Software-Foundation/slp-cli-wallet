@@ -11,6 +11,7 @@
 
 // By default choose a local rest API.
 let RESTAPI = 'fullstack.cash'
+// let RESTAPI = 'local'
 
 // Override the RESTAPI setting if envronment variable is set.
 if (process.env.RESTAPI && process.env.RESTAPI !== '') {
@@ -35,9 +36,9 @@ if (RESTAPI === 'fullstack.cash') {
   // config.BCHLIB = BCHJS.BitboxShim()
   config.BCHLIB = BCHJS
   config.NFTLIB = BCHJSNFT
-  config.MAINNET_REST = 'https://bchn.fullstack.cash/v4/'
+  config.MAINNET_REST = 'https://bchn.fullstack.cash/v5/'
   // config.MAINNET_REST = 'https://abc.fullstack.cash/v4/'
-  config.TESTNET_REST = 'https://testnet3.fullstack.cash/v4/'
+  config.TESTNET_REST = 'https://testnet3.fullstack.cash/v5/'
   config.RESTAPI = 'bchjs'
 }
 
@@ -47,10 +48,10 @@ if (RESTAPI === 'local') {
   config.NFTLIB = BCHJSNFT
   // config.MAINNET_REST = `http://192.168.0.36:12400/v4/`
   // config.TESTNET_REST = `http://192.168.0.38:13400/v4/`
-  config.MAINNET_REST = 'http://127.0.0.1:3000/v4/'
+  config.MAINNET_REST = 'http://127.0.0.1:3000/v5/'
   // config.TESTNET_REST = `http://decatur.hopto.org:13400/v4/`
   // config.TESTNET_REST = `https://testnet.bchjs.cash/v4/`
-  config.TESTNET_REST = 'http://127.0.0.1:4000/v4/'
+  config.TESTNET_REST = 'http://127.0.0.1:4000/v5/'
   config.RESTAPI = 'local'
 }
 
