@@ -419,7 +419,7 @@ class UpdateBalances extends Command {
       return { balances: balances.balances, bchUtxos, slpUtxos }
     } catch (err) {
       // console.log('Error: ', err)
-      console.log('Error in update-balances.js/getAddressData()')
+      console.log('Error in update-balances.js/getAddressData(): ', err)
       throw err
     }
   }
