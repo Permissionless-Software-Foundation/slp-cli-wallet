@@ -42,10 +42,14 @@ class CreateWallet extends Command {
 
       // Determine if this is a testnet wallet or a mainnet wallet.
       if (flags.testnet) {
-        this.bchjs = new this.localConfig.BCHLIB({ restURL: this.localConfig.TESTNET_REST })
+        this.bchjs = new this.localConfig.BCHLIB({
+          restURL: this.localConfig.TESTNET_REST
+        })
       }
 
-      const filename = `${__dirname}/../../wallets/${flags.name}.json`
+      const filename = `${__dirname.toString()}/../../wallets/${
+        flags.name
+      }.json`
 
       if (!flags.description) flags.description = ''
 
@@ -62,7 +66,7 @@ class CreateWallet extends Command {
   async createWallet (filename, testnet, desc) {
     try {
       if (!filename || filename === '') throw new Error('filename required.')
-      if (this.fs.existsSync(filename)) throw new Error('filename already exist')
+      if (this.fs.existsSync(filename)) { throw new Error('filename already exist') }
 
       // console.log(filename)
       // Initialize the wallet data object that will be saved to a file.
@@ -109,7 +113,7 @@ class CreateWallet extends Command {
       walletData.description = desc
 
       // Write out the basic information into a json file for other apps to use.
-      // const filename = `${__dirname}/../../wallets/${name}.json`
+      // const filename = `${__dirname.toString()}/../../wallets/${name}.json`
       await appUtils.saveWallet(filename, walletData)
 
       return walletData

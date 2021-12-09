@@ -1,4 +1,4 @@
-*Warning: This is an experimental 'hacker-friendly' wallet. It's intended for use by software developers. It has been tested only for the most common use-cases. It has been known to burn SLP tokens. Do not use this wallet for tokens with value.*
+_Warning: This is an experimental 'hacker-friendly' wallet. It's intended for use by software developers. It has been tested only for the most common use-cases. It has been known to burn SLP tokens. Do not use this wallet for tokens with value._
 
 # slp-cli-wallet
 
@@ -7,6 +7,7 @@ line. Add this library to your app to instantly give it the ability to transact
 on the BCH network! New to Bitcoin Cash? Find educational resources on the [FullStack.cash Documenation page](https://fullstack.cash/documentation).
 
 This project has the following goals:
+
 - Create a code base for a wallet that is easily forkable and extensible by JavaScript developers.
 - Provide a high-level abstraction to make it easy for new developers to add BCH and SLP wallet functionality into their apps.
 
@@ -23,8 +24,8 @@ creation of this project in the [docs directory](./docs)
 * [Commands](#commands)
 <!-- tocstop -->
 
-
 # NPM Usage
+
 The [npm library](https://www.npmjs.com/package/slp-cli-wallet) can be included
 in your own app to instantly give it the ability to send and receive BCH transactions, including SLP tokens.
 Here is an example of how to include it in your own app. This example will generate
@@ -40,12 +41,20 @@ const walletFile = './wallet.json'
 async function makeNewWallet() {
   const wallet = await createWallet.createWallet(walletFile)
 
-  console.log(`wallet: ${JSON.stringify(wallet,null,2)}`)
+  console.log(`wallet: ${JSON.stringify(wallet, null, 2)}`)
 }
 makeNewWallet()
 ```
 
+## Node and NPM Versions
+
+This app is tested on the following versions for npm and node.js:
+
+- npm: v7.12.1
+- node.js: v14.16.1
+
 # Install Dev Environment
+
 While this npm library can be used globally, the intended audience is developers
 familiar with the usage of `npm` and `git`. Here is how to set up your own
 developer environment:
@@ -58,29 +67,36 @@ Running the wallet this way, you can edit the behavior of the wallet
 by making changes to the code in the [src/commands](src/commands) directory.
 
 # Command Line Usage
+
 <!-- usage -->
 ```sh-session
 $ npm install -g slp-cli-wallet
 $ slp-cli-wallet COMMAND
 running command...
 $ slp-cli-wallet (-v|--version|version)
-slp-cli-wallet/3.0.0 linux-x64 node-v14.15.5
+slp-cli-wallet/3.0.0 darwin-x64 node-v12.16.1
 $ slp-cli-wallet --help [COMMAND]
 USAGE
   $ slp-cli-wallet COMMAND
 ...
 ```
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
 * [`slp-cli-wallet burn-tokens`](#slp-cli-wallet-burn-tokens)
 * [`slp-cli-wallet create-wallet`](#slp-cli-wallet-create-wallet)
 * [`slp-cli-wallet derivation`](#slp-cli-wallet-derivation)
 * [`slp-cli-wallet get-address`](#slp-cli-wallet-get-address)
 * [`slp-cli-wallet get-key`](#slp-cli-wallet-get-key)
-* [`slp-cli-wallet hello`](#slp-cli-wallet-hello)
 * [`slp-cli-wallet help [COMMAND]`](#slp-cli-wallet-help-command)
 * [`slp-cli-wallet list-wallets`](#slp-cli-wallet-list-wallets)
+* [`slp-cli-wallet nft-list-addr`](#slp-cli-wallet-nft-list-addr)
+* [`slp-cli-wallet nft-list-tokens`](#slp-cli-wallet-nft-list-tokens)
+* [`slp-cli-wallet nft-create-child`](#slp-cli-wallet-nft-create-child)
+* [`slp-cli-wallet nft-create-group`](#slp-cli-wallet-nft-create-group)
+* [`slp-cli-wallet nft-remove-child`](#slp-cli-wallet-nft-remove-child)
 * [`slp-cli-wallet remove-wallet`](#slp-cli-wallet-remove-wallet)
 * [`slp-cli-wallet scan-funds`](#slp-cli-wallet-scan-funds)
 * [`slp-cli-wallet send`](#slp-cli-wallet-send)
@@ -178,23 +194,6 @@ OPTIONS
 
 _See code: [src/commands/get-key.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/get-key.js)_
 
-## `slp-cli-wallet hello`
-
-Example command from oclif
-
-```
-USAGE
-  $ slp-cli-wallet hello
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Leaving it here for future reference in development.
-```
-
-_See code: [src/commands/hello.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/hello.js)_
 
 ## `slp-cli-wallet help [COMMAND]`
 
@@ -211,7 +210,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
 ## `slp-cli-wallet list-wallets`
 
@@ -223,6 +222,116 @@ USAGE
 ```
 
 _See code: [src/commands/list-wallets.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/list-wallets.js)_
+
+## `slp-cli-wallet nft-list-addr`
+
+List addresses inside the wallet
+
+```
+USAGE
+  $ slp-cli-wallet nft-list-addr
+
+OPTIONS
+  -n, --name=name  Name of wallet
+
+DESCRIPTION
+  ...
+  Will return a list of available addresses
+```
+
+_See code: [src/commands/nft-list-addr.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-list-addr.js)_
+
+## `slp-cli-wallet nft-list-tokens`
+
+List NFT tokens in a wallet address
+
+```
+USAGE
+  $ slp-cli-wallet nft-list-tokens
+
+OPTIONS
+  -g, --groups       List only NFT groups
+  -i, --index=index  Address index in the wallet
+  -n, --name=name    Name of wallet
+
+DESCRIPTION
+  ...
+  Will return a JSON formated list of available NFT tokens
+```
+
+_See code: [src/commands/nft-list-tokens.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-list-tokens.js)_
+
+## `slp-cli-wallet nft-create-child`
+
+Create NFT child
+
+```
+USAGE
+  $ slp-cli-wallet nft-create-child
+
+OPTIONS
+  -c, --child=child        Name of the child
+  -f, --funder=funder      Fee funder address index in the wallet
+  -g, --groupId=groupId    NFT Group ID
+  -h, --hash=hash          Document hash of the group
+  -i, --index=index        Address index in the wallet
+  -n, --name=name          Name of wallet
+  -r, --receiver=receiver  Address to send the token
+  -t, --ticker=ticker      Ticker of the child
+  -u, --url=url            Document URL of the group
+
+DESCRIPTION
+  ...
+  Will create NFT child token in a specified NFT group (groupId parameter)
+```
+
+_See code: [src/commands/nft-create-child.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-create-child.js)_
+
+## `slp-cli-wallet nft-create-group`
+
+Create NFT Group
+
+```
+USAGE
+  $ slp-cli-wallet nft-create-group
+
+OPTIONS
+  -a, --amount=amount
+  -f, --funder=funder  Fee funder address index in the wallet
+  -g, --group=group    Name of the group
+  -h, --hash=hash      Document hash of the group
+  -i, --index=index    Address index in the wallet
+  -n, --name=name      Name of wallet
+  -t, --ticker=ticker  Ticker of the group
+  -u, --url=url        Document URL of the group
+
+DESCRIPTION
+  ...
+  Will create NFT group with specified name, ticker and amount
+```
+
+_See code: [src/commands/nft-create-group.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-create-group.js)_
+
+## `slp-cli-wallet nft-remove-child`
+
+Remove NFT child token
+
+```
+USAGE
+  $ slp-cli-wallet nft-remove-child
+
+OPTIONS
+  -f, --funder=funder    Fee funder address index in the wallet
+  -i, --index=index      Address index in the wallet
+  -n, --name=name        Name of wallet
+  -t, --tokenId=tokenId  NFT child tokenId
+
+DESCRIPTION
+  ...
+  Will remove NFT child token (type = 65) with specified tokenId
+```
+
+_See code: [src/commands/nft-remove-child.js](https://github.com/Permissionless-Software-Foundation/slp-cli-wallet/blob/v3.0.0/src/commands/nft-remove-child.js)_
 
 ## `slp-cli-wallet remove-wallet`
 

@@ -8,7 +8,10 @@ const shell = require('shelljs')
 // Used in the update-balances test.
 function restoreWallet () {
   // console.log(`__dirname: ${__dirname}`)
-  shell.cp(`${__dirname}/../mocks/token-wallet.json`, `${__dirname}/../../wallets/test123.json`)
+  shell.cp(
+    `${__dirname.toString()}/../mocks/token-wallet.json`,
+    `${__dirname.toString()}/../../wallets/test123.json`
+  )
 }
 
 module.exports = {

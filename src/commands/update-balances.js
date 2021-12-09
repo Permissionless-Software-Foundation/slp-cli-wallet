@@ -95,7 +95,7 @@ class UpdateBalances extends Command {
     const name = flags.name
 
     // Open the wallet data file.
-    const filename = `${__dirname}/../../wallets/${name}.json`
+    const filename = `${__dirname.toString()}/../../wallets/${name}.json`
     const walletInfo = this.appUtils.openWallet(filename)
     walletInfo.name = name
 
@@ -198,7 +198,10 @@ class UpdateBalances extends Command {
 
             // If the token Ids match,
             // and if this is not a minting baton.
-            if (thisUtxo.tokenId.toString() === thisTokenId.toString() && thisUtxo.utxoType !== 'minting-baton') {
+            if (
+              thisUtxo.tokenId.toString() === thisTokenId.toString() &&
+              thisUtxo.utxoType !== 'minting-baton'
+            ) {
               // Add the ticker to the array.
               tickers[i] = thisUtxo.tokenTicker
 
@@ -416,7 +419,7 @@ class UpdateBalances extends Command {
       return { balances: balances.balances, bchUtxos, slpUtxos }
     } catch (err) {
       // console.log('Error: ', err)
-      console.log('Error in update-balances.js/getAddressData()')
+      console.log('Error in update-balances.js/getAddressData(): ', err)
       throw err
     }
   }
@@ -569,7 +572,7 @@ class UpdateBalances extends Command {
       if (walletInfo.addresses === undefined) walletInfo.addresses = []
 
       // Loop through each HD address index
-      for (var i = 0; i < walletInfo.nextAddress; i++) {
+      for (let i = 0; i < walletInfo.nextAddress; i++) {
         const thisAddr = addressData[i]
         // console.log(`thisAddr: ${JSON.stringify(thisAddr, null, 2)}`)
 
@@ -622,7 +625,7 @@ class UpdateBalances extends Command {
       let totalConfirmed = 0
       let totalUnconfirmed = 0
 
-      for (var i = 0; i < hasBalance.length; i++) {
+      for (let i = 0; i < hasBalance.length; i++) {
         const thisHasBalance = hasBalance[i]
 
         total += thisHasBalance.balance + thisHasBalance.unconfirmedBalance

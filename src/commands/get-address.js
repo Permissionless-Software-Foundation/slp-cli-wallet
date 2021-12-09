@@ -47,7 +47,9 @@ class GetAddress extends Command {
       }
 
       // Generate an absolute filename from the name.
-      const filename = `${__dirname}/../../wallets/${flags.name}.json`
+      const filename = `${__dirname.toString()}/../../wallets/${
+        flags.name
+      }.json`
 
       const newAddress = await this.getAddress(filename, flags)
 
@@ -75,7 +77,7 @@ class GetAddress extends Command {
   }
 
   async getAddress (filename, flags) {
-    // const filename = `${__dirname}/../../wallets/${name}.json`
+    // const filename = `${__dirname.toString()}/../../wallets/${name}.json`
 
     const walletInfo = this.appUtils.openWallet(filename)
     // console.log(`walletInfo: ${JSON.stringify(walletInfo, null, 2)}`)

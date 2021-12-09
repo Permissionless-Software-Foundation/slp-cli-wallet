@@ -17,7 +17,7 @@ class ListWallets extends Command {
 
   // Parse data from the wallets directory into a formatted array.
   parseWallets () {
-    const fileList = shelljs.ls(`${__dirname}/../../wallets/*.json`)
+    const fileList = shelljs.ls(`${__dirname.toString()}/../../wallets/*.json`)
 
     if (fileList.length === 0) {
       console.log('No wallets found.')
@@ -54,7 +54,7 @@ class ListWallets extends Command {
 
   // Display table in a table on the command line using cli-table.
   displayTable (data) {
-    var table = new Table({
+    const table = new Table({
       head: ['Name', 'Network', 'Balance (BCH)'],
       colWidths: [25, 15, 15]
     })

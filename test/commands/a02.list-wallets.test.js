@@ -4,7 +4,7 @@
 const assert = require('chai').assert
 const CreateWallet = require('../../src/commands/create-wallet')
 const ListWallets = require('../../src/commands/list-wallets')
-const filename = `${__dirname}/../../wallets/test123.json`
+const filename = `${__dirname.toString()}/../../wallets/test123.json`
 const fs = require('fs')
 const mock = require('mock-fs')
 

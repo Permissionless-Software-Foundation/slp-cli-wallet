@@ -50,7 +50,7 @@ class Send extends Command {
       const sendToAddr = flags.sendAddr // The address to send to.
 
       // Open the wallet data file.
-      const filename = `${__dirname}/../../wallets/${name}.json`
+      const filename = `${__dirname.toString()}/../../wallets/${name}.json`
       let walletInfo = this.appUtils.openWallet(filename)
       walletInfo.name = name
 
@@ -217,7 +217,7 @@ class Send extends Command {
     // console.log(`utxos: ${JSON.stringify(utxos, null, 2)}`)
 
     // Loop through each address.
-    for (var i = 0; i < utxos.length; i++) {
+    for (let i = 0; i < utxos.length; i++) {
       const thisAddr = utxos[i]
 
       // Loop through each UTXO for each address.

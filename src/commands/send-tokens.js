@@ -63,7 +63,7 @@ class SendTokens extends Command {
       const tokenId = flags.tokenId // SLP token ID.
 
       // Open the wallet data file.
-      const filename = `${__dirname}/../../wallets/${name}.json`
+      const filename = `${__dirname.toString()}/../../wallets/${name}.json`
       let walletInfo = appUtils.openWallet(filename)
       walletInfo.name = name
 
@@ -192,10 +192,8 @@ class SendTokens extends Command {
       // Generate the OP_RETURN entry for an SLP SEND transaction.
       // console.log(`Generating op-return.`)
       // const { script, outputs } = this.generateOpReturn(tokenUtxos, qty)
-      const {
-        script,
-        outputs
-      } = this.bchjs.SLP.TokenType1.generateSendOpReturn(tokenUtxos, qty)
+      const { script, outputs } =
+        this.bchjs.SLP.TokenType1.generateSendOpReturn(tokenUtxos, qty)
       // console.log(`script: ${JSON.stringify(script, null, 2)}`)
 
       // const data = bchjs.Script.encode(script)
@@ -292,7 +290,9 @@ class SendTokens extends Command {
       // Create an array of the UTXOs in the wallet that are associated with the
       // target token.
       let tokenUtxos = walletInfo.SLPUtxos.map(elem =>
-        elem.utxos.filter(x => x.tokenId === tokenId && x.utxoType !== 'minting-baton')
+        elem.utxos.filter(
+          x => x.tokenId === tokenId && x.utxoType !== 'minting-baton'
+        )
       )
       // console.log(`tokenUtxos: ${JSON.stringify(tokenUtxos, null, 2)}`)
 
